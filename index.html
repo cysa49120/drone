@@ -208,19 +208,26 @@ body{font-family:var(--sans);background:var(--light);color:var(--text);padding-b
   *{-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important}
   body{background:white;font-size:11px;padding-bottom:0}
   .hdr{position:static;box-shadow:none}
-  .search-bar,.hdr-btns,.progress-bar,.add-btn,.pdf-btn,.map-links,.zone-capture-btns,.capture-btn,#captureDelBtn,#captureInput,.zone-capture-label{display:none !important}
-  .zone-capture{padding:8px 0 0 !important}
+  .search-bar,.hdr-btns,.progress-bar,.add-btn,.pdf-btn,.map-links,
+  .zone-capture-btns,.capture-btn,#captureDelBtn,#captureInput,
+  .zone-capture-label,.chevron,.map-cap,
+  /* hide legends in print — they take space, not useful on paper */
+  .zone-capture > div:last-of-type > div[style*="background:#f8fafc"]{display:none !important}
+  .zone-capture{padding:6px 0 0 !important}
   .capture-preview{border:1px solid #ccc !important;margin-bottom:8px}
-  .capture-preview .no-capture{display:none}
+  .capture-preview .no-capture{display:none !important}
   .hdr-top{margin-bottom:0}
-  .map-wrap.open{display:block !important}
-  .map-wrap iframe{height:160px}
+  /* hide OSM map iframe on print — replaced by the capture screenshot */
+  .map-wrap{display:none !important}
   .card{box-shadow:none;border:1px solid #ccc;break-inside:avoid;margin-bottom:8px}
   .card-body{display:block !important}
   .main{padding:8px}
   .zone-status.open{display:flex !important}
   .airport-result{display:block !important}
-  @page{margin:1cm;size:A4}
+  /* sign blocks must not break across pages */
+  .sign-block{break-inside:avoid;page-break-inside:avoid}
+  #s9 .card-body{break-inside:avoid;page-break-inside:avoid}
+  @page{margin:1.2cm;size:A4}
 }
 </style>
 </head>
@@ -253,13 +260,8 @@ body{font-family:var(--sans);background:var(--light);color:var(--text);padding-b
 </div>
 
 <div class="map-wrap" id="mapWrap">
-  <div class="map-cap" id="mapCap"></div>
   <iframe id="mapFrame" src="" allowfullscreen loading="lazy"></iframe>
-  <div class="map-links">
-    <a class="map-link-btn mlb-flyby" id="linkFlyby" href="https://app.flyby.aero" target="_blank" rel="noopener">🚁 FlyBy</a>
-    <a class="map-link-btn mlb-geo" id="linkGeo" href="#" target="_blank" rel="noopener">🗺 Cartes.gouv</a>
-    <a class="map-link-btn mlb-not" id="linkNot" href="https://notaminfo.fr" target="_blank" rel="noopener">📋 NOTAM</a>
-  </div>
+  <div class="map-cap" id="mapCap"></div>
 </div>
 
 <div class="main">
@@ -355,9 +357,42 @@ body{font-family:var(--sans);background:var(--light);color:var(--text);padding-b
 
         <!-- Boutons accès cartes -->
         <div class="zone-capture-btns">
-          <button class="capture-btn primary" onclick="openFlyby()">🚁 FlyBy</button>
-          <button class="capture-btn secondary" onclick="window.open('https://www.geoportail.gouv.fr/donnees/restrictions-uas-categorie-ouverte-et-aeromodelisme','_blank','noopener')">🗺 Géoportail UAS</button>
-          <button class="capture-btn secondary" style="flex:0 0 auto;padding:0 12px" onclick="openNotam()">📋 NOTAM</button>
+          <button class="capture-btn primary" onclick="copyAndOpen('flyby')">🚁 FlyBy</button>
+          <button class="capture-btn secondary" onclick="copyAndOpen('geo')">🗺 Géoportail UAS</button>
+        </div>
+        <div id="copyConfirm" style="display:none;font-size:11px;color:var(--green);padding:4px 0 6px;font-weight:600">
+          ✓ Adresse copiée — collez-la dans le site qui vient de s'ouvrir
+        </div>
+
+        <!-- LÉGENDES -->
+        <div style="display:flex;flex-direction:column;gap:8px;margin-top:4px">
+
+          <!-- Géoportail -->
+          <div style="background:#f8fafc;border:1px solid var(--border);border-radius:10px;padding:10px 12px">
+            <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px">🗺 Légende Géoportail UAS</div>
+            <div style="display:flex;flex-direction:column;gap:5px;font-size:12px">
+              <div style="display:flex;align-items:center;gap:8px"><span style="width:18px;height:18px;border-radius:4px;background:#c0392b;flex-shrink:0;display:inline-block"></span><span><strong>Rouge — Zone P (Prohibited)</strong> : vol interdit, dérogation exceptionnelle uniquement (nucléaire, militaire, Élysée…)</span></div>
+              <div style="display:flex;align-items:center;gap:8px"><span style="width:18px;height:18px;border-radius:4px;background:#e67e22;flex-shrink:0;display:inline-block"></span><span><strong>Orange — Zone R (Restricted)</strong> : vol restreint, accord préalable requis (CTR aéroport, zone sensible)</span></div>
+              <div style="display:flex;align-items:center;gap:8px"><span style="width:18px;height:18px;border-radius:4px;background:#f1c40f;flex-shrink:0;display:inline-block"></span><span><strong>Jaune — Agglomération</strong> : vol en espace public interdit sauf désignation préfectorale</span></div>
+              <div style="display:flex;align-items:center;gap:8px"><span style="width:18px;height:18px;border-radius:4px;background:#2980b9;flex-shrink:0;display:inline-block"></span><span><strong>Bleu — Hauteur limitée</strong> : hauteur max réduite (30, 50 ou 100 m selon la zone)</span></div>
+              <div style="display:flex;align-items:center;gap:8px"><span style="width:18px;height:18px;border-radius:4px;background:#27ae60;flex-shrink:0;display:inline-block"></span><span><strong>Vert / Blanc — Zone libre</strong> : vol autorisé jusqu'à 120 m sans restriction particulière</span></div>
+              <div style="display:flex;align-items:center;gap:8px"><span style="width:18px;height:18px;border-radius:4px;background:#c0392b;border-radius:50%;flex-shrink:0;display:inline-block"></span><span><strong>Disque rouge (200 m)</strong> : établissement interdit de survol (AIP ENR 5.0)</span></div>
+            </div>
+          </div>
+
+          <!-- FlyBy -->
+          <div style="background:#f8fafc;border:1px solid var(--border);border-radius:10px;padding:10px 12px">
+            <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px">🚁 Légende FlyBy (Air Space Drone)</div>
+            <div style="display:flex;flex-direction:column;gap:5px;font-size:12px">
+              <div style="display:flex;align-items:center;gap:8px"><span style="width:18px;height:18px;border-radius:4px;background:#c0392b;flex-shrink:0;display:inline-block"></span><span><strong>Rouge</strong> : zone interdite — vol impossible sans dérogation</span></div>
+              <div style="display:flex;align-items:center;gap:8px"><span style="width:18px;height:18px;border-radius:4px;background:#e67e22;flex-shrink:0;display:inline-block"></span><span><strong>Orange</strong> : zone réglementée — accord préalable ou conditions particulières</span></div>
+              <div style="display:flex;align-items:center;gap:8px"><span style="width:18px;height:18px;border-radius:4px;background:#f1c40f;flex-shrink:0;display:inline-block"></span><span><strong>Jaune</strong> : zone de vigilance — précautions à prendre (ligne haute tension, zone naturelle…)</span></div>
+              <div style="display:flex;align-items:center;gap:8px"><span style="width:18px;height:18px;border-radius:4px;background:#8e44ad;flex-shrink:0;display:inline-block"></span><span><strong>Violet</strong> : ZICAD — zone interdite à la captation aérienne de données</span></div>
+              <div style="display:flex;align-items:center;gap:8px"><span style="width:18px;height:18px;border-radius:4px;background:#27ae60;flex-shrink:0;display:inline-block"></span><span><strong>Vert</strong> : vol autorisé sans restriction particulière</span></div>
+            </div>
+            <div style="font-size:10px;color:var(--muted);margin-top:6px">FlyBy intègre également les zones Natura 2000, les parcs nationaux, les voies ferrées et les données AIP à jour.</div>
+          </div>
+
         </div>
 
         <!-- Capture d'écran -->
@@ -1030,39 +1065,48 @@ function openGeo() {
   });
 }
 
-function openFlyby() {
-  getCoords((addr, lat, lon) => {
-    showOsmMap(addr || 'Site', lat || 46.6, lon || 2.3);
-    window.open('https://app.flyby.aero', '_blank', 'noopener');
-  });
+function copyAndOpen(target) {
+  const addr = document.getElementById('adresseSite').value.trim()
+             || document.getElementById('addrInput').value.trim();
+  // Copy address to clipboard
+  if (addr) {
+    navigator.clipboard.writeText(addr).catch(() => {
+      // fallback for older iOS
+      const ta = document.createElement('textarea');
+      ta.value = addr; ta.style.position = 'fixed'; ta.style.opacity = '0';
+      document.body.appendChild(ta); ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+    });
+    const confirm = document.getElementById('copyConfirm');
+    confirm.style.display = 'block';
+    setTimeout(() => { confirm.style.display = 'none'; }, 4000);
+  }
+  const urls = {
+    flyby: 'https://app.flyby.aero',
+    geo:   'https://www.geoportail.gouv.fr/donnees/restrictions-uas-categorie-ouverte-et-aeromodelisme'
+  };
+  window.open(urls[target], '_blank', 'noopener');
+  // Also show OSM map if coords available
+  const inp = document.getElementById('addrInput');
+  if (inp.dataset.lat) showOsmMap(addr, parseFloat(inp.dataset.lat), parseFloat(inp.dataset.lon));
 }
 
-function openCartesGouv() {
-  getCoords((addr, lat, lon) => {
-    if (lat) showOsmMap(addr, lat, lon);
-    const url = lat
-      ? `https://cartes.gouv.fr/?center=${lon},${lat}&zoom=14`
-      : 'https://cartes.gouv.fr/';
-    window.open(url, '_blank', 'noopener');
-  });
-}
-
-function openNotam() {
-  window.open('https://notaminfo.fr', '_blank', 'noopener');
-}
-
-// ─── PDF (impression iOS/iPadOS) ───
+// ─── PDF ───
 function makePdf(){
-  // Sur iOS, window.print() génère un PDF partageable via le menu natif
-  // On ouvre d'abord toutes les sections pour l'impression
-  document.querySelectorAll('.card').forEach(c=>c.classList.add('open'));
-  setTimeout(()=>{
+  // Ouvre toutes les sections
+  document.querySelectorAll('.card').forEach(c => c.classList.add('open'));
+  // Attend que le DOM soit rendu avant d'imprimer
+  setTimeout(() => {
     window.print();
-    // Referme les sections après impression
-    setTimeout(()=>{
-      document.querySelectorAll('.card:not(#s1):not(#s9)').forEach(c=>c.classList.remove('open'));
-    },1000);
-  },200);
+    // Referme les sections annexes après impression
+    setTimeout(() => {
+      ['s2','s3','s4','s5','s6','s7','s8'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.classList.remove('open');
+      });
+    }, 2000);
+  }, 400);
 }
 
 // ─── INIT ───
