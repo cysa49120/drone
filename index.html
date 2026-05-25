@@ -2,962 +2,1078 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Fiche Pré-Vol Drone — DJI Mini 4 Pro</title>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Fiche Pré-Vol Drone</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --navy: #0f1e35;
-    --blue: #1a4a8a;
-    --sky: #2e75b6;
-    --accent: #e8a020;
-    --red: #c0392b;
-    --green: #27714a;
-    --light: #f4f7fb;
-    --border: #cbd5e1;
-    --text: #1e293b;
-    --muted: #64748b;
-    --mono: 'IBM Plex Mono', monospace;
-    --sans: 'IBM Plex Sans', sans-serif;
-  }
+:root {
+  --navy:#0f1e35;--blue:#1a4a8a;--sky:#2e75b6;--accent:#e8a020;
+  --red:#c0392b;--green:#27714a;--orange:#b45309;
+  --light:#f0f4f9;--border:#c8d5e4;--text:#1e293b;--muted:#64748b;
+  --mono:'IBM Plex Mono',monospace;--sans:'IBM Plex Sans',sans-serif;
+  --radius:12px;--tap:52px;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{font-size:16px}
+body{font-family:var(--sans);background:var(--light);color:var(--text);padding-bottom:60px}
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+/* HEADER */
+.hdr{background:var(--navy);padding:14px 14px 10px;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.3)}
+.hdr-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:10px}
+.hdr h1{font-size:14px;font-weight:700;color:white;line-height:1.3;text-transform:uppercase;letter-spacing:.03em}
+.hdr p{font-size:10px;color:#90aacb;margin-top:2px}
+.badge{background:var(--accent);color:var(--navy);font-family:var(--mono);font-weight:500;font-size:10px;padding:4px 8px;border-radius:6px;white-space:nowrap;flex-shrink:0}
 
-  body {
-    font-family: var(--sans);
-    background: var(--light);
-    color: var(--text);
-    font-size: 13px;
-    line-height: 1.5;
-  }
+/* SEARCH */
+.search-bar{display:flex;gap:8px;align-items:center}
+.ac-wrap{position:relative;flex:1}
+.search-input{width:100%;height:var(--tap);padding:0 14px;border:none;border-radius:10px;font-family:var(--sans);font-size:15px;background:white;color:var(--text);outline:none;-webkit-appearance:none}
+.ac-list{position:absolute;top:calc(100% + 6px);left:0;right:0;background:white;border-radius:12px;box-shadow:0 12px 40px rgba(0,0,0,.22);z-index:9999;max-height:280px;overflow-y:auto;display:none;-webkit-overflow-scrolling:touch}
+.ac-list.open{display:block}
+.ac-item{padding:13px 16px;font-size:14px;border-bottom:1px solid #f1f5f9;cursor:pointer;display:flex;gap:10px;align-items:flex-start;line-height:1.4}
+.ac-item:last-child{border-bottom:none}
+.ac-item:active,.ac-item.active{background:#eff6ff}
+.ac-main{font-weight:600;font-size:14px}
+.ac-sub{font-size:12px;color:var(--muted)}
+.ac-spin{padding:14px 16px;font-size:13px;color:var(--muted);font-style:italic}
 
-  /* ── HEADER ── */
-  .doc-header {
-    background: var(--navy);
-    color: white;
-    padding: 18px 28px 14px;
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 20px;
-  }
-  .doc-header-left h1 {
-    font-size: 17px;
-    font-weight: 700;
-    letter-spacing: .04em;
-    text-transform: uppercase;
-  }
-  .doc-header-left p {
-    font-size: 11px;
-    color: #90aacb;
-    margin-top: 3px;
-    font-family: var(--mono);
-  }
-  .doc-header-right {
-    text-align: right;
-    flex-shrink: 0;
-  }
-  .badge-num {
-    background: var(--accent);
-    color: var(--navy);
-    font-family: var(--mono);
-    font-weight: 600;
-    font-size: 12px;
-    padding: 4px 10px;
-    letter-spacing: .05em;
-    border-radius: 2px;
-    display: inline-block;
-    margin-bottom: 4px;
-  }
-  .badge-label {
-    font-size: 9px;
-    color: #90aacb;
-    text-transform: uppercase;
-    letter-spacing: .08em;
-    display: block;
-  }
+.hdr-btns{display:flex;gap:6px;margin-top:8px}
+.btn{flex:1;height:var(--tap);border:none;border-radius:10px;font-family:var(--sans);font-weight:700;font-size:12px;cursor:pointer;letter-spacing:.02em;display:flex;align-items:center;justify-content:center;gap:5px;-webkit-appearance:none;transition:opacity .15s}
+.btn:active{opacity:.75}
+.btn-check{background:var(--accent);color:var(--navy)}
+.btn-geo{background:#1a4a8a;color:white}
+.btn-print{background:white;color:var(--navy);flex:0 0 auto;padding:0 14px}
 
-  /* ── SEARCH BANNER ── */
-  .search-banner {
-    background: var(--blue);
-    padding: 14px 28px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    flex-wrap: wrap;
-  }
-  .search-banner label {
-    color: white;
-    font-weight: 600;
-    font-size: 12px;
-    text-transform: uppercase;
-    letter-spacing: .06em;
-    white-space: nowrap;
-  }
-  .search-row {
-    display: flex;
-    gap: 8px;
-    flex: 1;
-    min-width: 260px;
-  }
-  .search-input {
-    flex: 1;
-    padding: 8px 12px;
-    border: none;
-    border-radius: 3px;
-    font-family: var(--sans);
-    font-size: 13px;
-    background: white;
-    color: var(--text);
-    outline: none;
-  }
-  .btn {
-    padding: 8px 16px;
-    border: none;
-    border-radius: 3px;
-    font-family: var(--sans);
-    font-weight: 600;
-    font-size: 12px;
-    cursor: pointer;
-    text-transform: uppercase;
-    letter-spacing: .05em;
-    transition: opacity .15s;
-    white-space: nowrap;
-  }
-  .btn:hover { opacity: .85; }
-  .btn-geo { background: var(--accent); color: var(--navy); }
-  .btn-print { background: white; color: var(--navy); }
+/* ZONE RESULT - header bar */
+.zone-result{margin-top:8px;border-radius:8px;padding:8px 12px;font-size:12px;font-weight:600;display:none;align-items:center;gap:8px}
+.zone-result.open{display:flex}
+.zone-result.safe{background:#d1fae5;color:#065f46}
+.zone-result.warn{background:#fef3c7;color:#92400e}
+.zone-result.danger{background:#fee2e2;color:#991b1b}
+.zone-result.loading{background:#e0f2fe;color:#0369a1}
+.zone-icon{font-size:16px}
 
-  /* ── IFRAME ZONE ── */
-  .map-container {
-    background: #e8edf3;
-    border-bottom: 2px solid var(--border);
-    position: relative;
-    display: none;
-  }
-  .map-container.visible { display: block; }
-  .map-container iframe {
-    width: 100%;
-    height: 420px;
-    border: none;
-    display: block;
-  }
-  .map-caption {
-    position: absolute;
-    bottom: 8px;
-    right: 12px;
-    background: rgba(15,30,53,.75);
-    color: #cdd9ea;
-    font-family: var(--mono);
-    font-size: 10px;
-    padding: 3px 8px;
-    border-radius: 2px;
-    pointer-events: none;
-  }
-  .map-placeholder {
-    height: 120px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--muted);
-    font-size: 12px;
-    gap: 8px;
-  }
+/* MAP */
+.map-wrap{display:none;border-bottom:2px solid var(--border)}
+.map-wrap.open{display:block}
+.map-wrap iframe{width:100%;height:260px;border:none;display:block}
+.map-cap{background:rgba(15,30,53,.9);color:#cdd9ea;font-size:11px;font-family:var(--mono);padding:5px 12px;text-align:center}
+.map-links{background:var(--navy);display:flex;gap:6px;padding:8px 12px;flex-wrap:wrap}
+.map-link-btn{flex:1;min-width:100px;height:40px;border:none;border-radius:8px;font-family:var(--sans);font-weight:700;font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:4px;text-decoration:none;color:inherit;-webkit-appearance:none;transition:opacity .15s}
+.map-link-btn:active{opacity:.7}
+.mlb-flyby{background:var(--accent);color:var(--navy)}
+.mlb-geo{background:#1a4a8a;color:white}
+.mlb-not{background:#5b2d8e;color:white}
 
-  /* ── MAIN GRID ── */
-  .main {
-    padding: 18px 28px 28px;
-    max-width: 960px;
-    margin: 0 auto;
-  }
+/* ZONE CAPTURE BLOCK */
+.zone-capture{padding:10px 14px 0}
+.zone-capture-label{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px;display:block}
+.zone-capture-btns{display:flex;gap:8px;margin-bottom:10px}
+.capture-btn{flex:1;height:44px;border:1.5px solid var(--border);border-radius:10px;font-family:var(--sans);font-weight:700;font-size:13px;cursor:pointer;-webkit-appearance:none;display:flex;align-items:center;justify-content:center;gap:6px;transition:all .15s}
+.capture-btn:active{opacity:.75}
+.capture-btn.primary{background:var(--sky);border-color:var(--sky);color:white}
+.capture-btn.secondary{background:white;color:var(--text)}
+.capture-preview{position:relative;border:1.5px solid var(--border);border-radius:10px;overflow:hidden;background:#f8fafc;min-height:60px;display:flex;align-items:center;justify-content:center}
+.capture-preview img{width:100%;display:block;border-radius:8px}
+.capture-preview .no-capture{font-size:12px;color:var(--muted);padding:16px;text-align:center}
+.capture-del{position:absolute;top:8px;right:8px;width:30px;height:30px;background:rgba(192,57,43,.9);border:none;border-radius:50%;color:white;font-size:16px;cursor:pointer;display:none;align-items:center;justify-content:center}
+.capture-del.show{display:flex}
 
-  /* ── SECTION BLOCKS ── */
-  .section {
-    margin-bottom: 20px;
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    overflow: hidden;
-    background: white;
-  }
-  .section-head {
-    background: var(--navy);
-    color: white;
-    padding: 7px 14px;
-    font-weight: 700;
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: .08em;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .section-head.sky { background: var(--sky); }
-  .section-head.orange { background: #b45309; }
-  .section-head.green { background: var(--green); }
-  .section-head.red { background: var(--red); }
-  .section-num {
-    font-family: var(--mono);
-    font-size: 10px;
-    opacity: .65;
-    margin-left: auto;
-  }
-  .section-body { padding: 12px 14px; }
+/* ZONE STATUS */
+.zone-status{margin:8px 14px 0;padding:12px 14px;border-radius:10px;font-size:13px;font-weight:600;display:none;align-items:center;gap:10px;line-height:1.4}
+.zone-status.open{display:flex}
+.zone-status.safe{background:#d1fae5;color:#065f46;border:1.5px solid #6ee7b7}
+.zone-status.warn{background:#fef3c7;color:#92400e;border:1.5px solid #fcd34d}
+.zone-status.danger{background:#fee2e2;color:#991b1b;border:1.5px solid #fca5a5}
+.zone-status.loading{background:#e0f2fe;color:#0369a1;border:1.5px solid #7dd3fc}
+.zone-status-icon{font-size:22px;flex-shrink:0}
+.zone-status-text{flex:1}
+.zone-status-src{font-size:10px;font-weight:400;opacity:.75;display:block;margin-top:2px}
 
-  /* ── FIELD GRID ── */
-  .field-grid {
-    display: grid;
-    grid-template-columns: 180px 1fr;
-    gap: 0;
-  }
-  .field-grid.col3 {
-    grid-template-columns: 180px 1fr 1fr;
-  }
-  .field-label {
-    background: #f1f5f9;
-    border: 1px solid var(--border);
-    padding: 6px 10px;
-    font-size: 11px;
-    font-weight: 600;
-    color: var(--muted);
-    display: flex;
-    align-items: center;
-    margin-top: -1px;
-  }
-  .field-val {
-    border: 1px solid var(--border);
-    padding: 6px 10px;
-    font-size: 12px;
-    margin-top: -1px;
-    min-height: 30px;
-  }
-  .field-val.tall { min-height: 52px; }
-  .field-val input, .field-val select, .field-val textarea {
-    width: 100%;
-    border: none;
-    background: transparent;
-    font-family: var(--sans);
-    font-size: 12px;
-    color: var(--text);
-    outline: none;
-    resize: none;
-  }
-  .field-val textarea { min-height: 40px; }
+/* PROGRESS */
+.progress-bar{height:3px;background:rgba(255,255,255,.15);margin-top:8px;border-radius:2px;overflow:hidden}
+.progress-fill{height:100%;background:var(--accent);border-radius:2px;transition:width .4s ease;width:0%}
 
-  /* ── CHECK TABLE ── */
-  .check-table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-  .check-table th {
-    background: var(--sky);
-    color: white;
-    font-size: 10px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: .06em;
-    padding: 6px 10px;
-    text-align: left;
-    border: 1px solid rgba(255,255,255,.2);
-  }
-  .check-table td {
-    border: 1px solid var(--border);
-    padding: 6px 10px;
-    font-size: 11px;
-    vertical-align: middle;
-  }
-  .check-table tr:nth-child(even) td { background: #f8fafc; }
-  .check-table td.check-col {
-    text-align: center;
-    width: 60px;
-  }
-  .check-table td.remark-col { width: 200px; }
-  .check-table td input[type=checkbox] {
-    width: 15px; height: 15px;
-    accent-color: var(--sky);
-    cursor: pointer;
-  }
-  .check-table td input[type=text] {
-    width: 100%;
-    border: none;
-    background: transparent;
-    font-family: var(--sans);
-    font-size: 11px;
-    outline: none;
-  }
+/* MAIN */
+.main{padding:12px 12px}
 
-  /* ── BUILDINGS TABLE ── */
-  .bat-table { width: 100%; border-collapse: collapse; font-size: 11px; }
-  .bat-table th {
-    background: var(--navy);
-    color: white;
-    padding: 6px 8px;
-    font-size: 10px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: .05em;
-    border: 1px solid rgba(255,255,255,.15);
-  }
-  .bat-table td {
-    border: 1px solid var(--border);
-    padding: 5px 8px;
-    vertical-align: middle;
-  }
-  .bat-table tr:nth-child(even) td { background: #f8fafc; }
-  .bat-table td input {
-    width: 100%;
-    border: none;
-    background: transparent;
-    font-family: var(--sans);
-    font-size: 11px;
-    outline: none;
-  }
+/* CARD */
+.card{background:white;border-radius:var(--radius);margin-bottom:10px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.08)}
+.card-head{display:flex;align-items:center;justify-content:space-between;padding:0 14px;height:54px;cursor:pointer;user-select:none;-webkit-user-select:none;gap:8px}
+.card-head:active{opacity:.8}
+.card-head-left{display:flex;align-items:center;gap:10px;flex:1;min-width:0}
+.card-num{width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;flex-shrink:0;color:white}
+.card-title{font-weight:700;font-size:14px;line-height:1.25}
+.card-tag{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:2px 6px;border-radius:4px;flex-shrink:0}
+.tag-oblig{background:#fee2e2;color:var(--red)}
+.tag-prat{background:#e0f2fe;color:#0369a1}
+.chevron{font-size:18px;color:var(--muted);transition:transform .25s;flex-shrink:0}
+.card.open .chevron{transform:rotate(180deg)}
+.card-body{display:none;padding:4px 0 14px;border-top:1px solid var(--border)}
+.card.open .card-body{display:block}
+.status-dot{width:8px;height:8px;border-radius:50%;background:var(--border);flex-shrink:0;transition:background .2s}
+.status-dot.done{background:var(--green)}
 
-  /* ── CHECKLIST GRID ── */
-  .check-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 6px;
-  }
-  .check-item {
-    display: flex;
-    align-items: center;
-    gap: 7px;
-    padding: 5px 8px;
-    border: 1px solid var(--border);
-    border-radius: 3px;
-    font-size: 11px;
-    background: #f8fafc;
-  }
-  .check-item input[type=checkbox] {
-    flex-shrink: 0;
-    width: 14px; height: 14px;
-    accent-color: var(--sky);
-    cursor: pointer;
-  }
+/* FIELDS */
+.field{padding:10px 14px 0}
+.field label{display:block;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px}
+.field input[type=text],.field input[type=date],.field input[type=time],.field textarea{width:100%;min-height:var(--tap);padding:13px 14px;border:1.5px solid var(--border);border-radius:10px;font-family:var(--sans);font-size:15px;color:var(--text);background:var(--light);outline:none;-webkit-appearance:none;transition:border-color .15s}
+.field input:focus,.field textarea:focus{border-color:var(--sky);background:white}
+.field input[readonly]{background:#f1f5f9;color:var(--sky);font-family:var(--mono);font-weight:500;font-size:13px}
+.field textarea{min-height:80px;resize:none;line-height:1.5}
+.field-row{display:flex;gap:8px}
+.field-row .field{flex:1}
 
-  /* ── ALERT BOXES ── */
-  .alert {
-    padding: 9px 12px;
-    border-left: 3px solid;
-    border-radius: 2px;
-    margin-bottom: 10px;
-    font-size: 11px;
-  }
-  .alert.warn { border-color: var(--accent); background: #fffbeb; }
-  .alert.info { border-color: var(--sky); background: #eff6ff; }
-  .alert.danger { border-color: var(--red); background: #fef2f2; }
-  .alert.success { border-color: var(--green); background: #f0fdf4; }
-  .alert strong { display: block; margin-bottom: 4px; font-size: 11px; }
-  .alert ul { margin: 4px 0 0 14px; }
-  .alert li { margin-bottom: 2px; }
+/* TOGGLE PILLS */
+.toggle-group{padding:10px 14px 0;display:flex;flex-wrap:wrap;gap:8px}
+.toggle-btn{min-height:40px;padding:8px 14px;border:1.5px solid var(--border);border-radius:20px;font-family:var(--sans);font-size:14px;font-weight:600;background:white;color:var(--muted);cursor:pointer;-webkit-appearance:none;display:flex;align-items:center;gap:6px;transition:all .15s;user-select:none;-webkit-user-select:none}
+.toggle-btn.on{background:var(--sky);border-color:var(--sky);color:white}
+.toggle-btn:active{opacity:.75}
 
-  /* ── INLINE CHECKBOXES ── */
-  .inline-checks {
-    display: flex;
-    gap: 16px;
-    flex-wrap: wrap;
-    align-items: center;
-  }
-  .inline-checks label {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    font-size: 12px;
-    cursor: pointer;
-  }
-  .inline-checks input[type=checkbox] {
-    width: 13px; height: 13px;
-    accent-color: var(--sky);
-  }
+/* AUTRE FIELD */
+.autre-field{padding:8px 14px 0;display:none}
+.autre-field.open{display:block}
 
-  /* ── SIGN BLOCK ── */
-  .sign-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 14px;
-  }
-  .sign-box {
-    border: 1px solid var(--border);
-    border-radius: 3px;
-    overflow: hidden;
-  }
-  .sign-head {
-    background: var(--sky);
-    color: white;
-    padding: 6px 12px;
-    font-weight: 700;
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: .06em;
-  }
-  .sign-body {
-    padding: 10px 12px;
-    font-size: 11px;
-    min-height: 110px;
-  }
-  .sign-body p { margin-bottom: 6px; }
-  .sign-line {
-    border-bottom: 1px solid var(--border);
-    margin: 8px 0 14px;
-    min-height: 30px;
-  }
+/* CHECKLIST */
+.checklist{padding:8px 14px 0}
+.check-item{display:flex;align-items:center;gap:14px;min-height:var(--tap);padding:0 4px;border-bottom:1px solid #f1f5f9;cursor:pointer;-webkit-user-select:none;user-select:none}
+.check-item:last-child{border-bottom:none}
+.check-item:active{background:#f8fafc;border-radius:8px}
+.check-box{width:28px;height:28px;border:2px solid var(--border);border-radius:8px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:16px;transition:all .15s}
+.check-item.checked .check-box{background:var(--green);border-color:var(--green);color:white}
+.check-label{font-size:14px;line-height:1.35;flex:1}
 
-  /* ── FOOTER ── */
-  .doc-footer {
-    background: var(--navy);
-    color: #64748b;
-    font-size: 10px;
-    font-family: var(--mono);
-    padding: 8px 28px;
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 6px;
-  }
+/* VERIFY */
+.verify-list{padding:8px 14px 0}
+.verify-item{background:#f8fafc;border:1px solid var(--border);border-radius:10px;margin-bottom:8px;overflow:hidden}
+.verify-item-head{display:flex;align-items:center;gap:10px;padding:12px 14px;cursor:pointer;-webkit-user-select:none;min-height:var(--tap)}
+.verify-item-head:active{background:#eff6ff}
+.verify-label{flex:1;font-size:13px;line-height:1.35}
+.verify-btns{display:flex;gap:5px;flex-shrink:0}
+.vbtn{width:34px;height:34px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;font-weight:700;background:white;cursor:pointer;display:flex;align-items:center;justify-content:center;-webkit-appearance:none;transition:all .15s}
+.vbtn:active{opacity:.7}
+.vbtn.ok{background:var(--green);border-color:var(--green);color:white}
+.vbtn.nok{background:var(--red);border-color:var(--red);color:white}
+.vbtn.na{background:var(--muted);border-color:var(--muted);color:white}
+.verify-remark{padding:0 14px 10px;display:none}
+.verify-remark.open{display:block}
+.verify-remark input{width:100%;height:42px;padding:0 12px;border:1.5px solid var(--border);border-radius:8px;font-family:var(--sans);font-size:14px;background:white;outline:none;-webkit-appearance:none}
 
-  /* ── AUTOCOMPLETE ── */
-  .autocomplete-wrap {
-    position: relative;
-    flex: 1;
-    min-width: 260px;
-  }
-  .autocomplete-wrap input {
-    width: 100%;
-  }
-  .autocomplete-list {
-    position: absolute;
-    top: calc(100% + 4px);
-    left: 0;
-    right: 0;
-    background: white;
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    box-shadow: 0 8px 24px rgba(0,0,0,.18);
-    z-index: 9999;
-    max-height: 260px;
-    overflow-y: auto;
-    display: none;
-  }
-  .autocomplete-list.open { display: block; }
-  .autocomplete-item {
-    padding: 9px 13px;
-    font-size: 12px;
-    font-family: var(--sans);
-    color: var(--text);
-    cursor: pointer;
-    border-bottom: 1px solid #f1f5f9;
-    display: flex;
-    align-items: flex-start;
-    gap: 8px;
-    line-height: 1.4;
-  }
-  .autocomplete-item:last-child { border-bottom: none; }
-  .autocomplete-item:hover,
-  .autocomplete-item.active { background: #eff6ff; }
-  .autocomplete-item .ac-icon { color: var(--sky); flex-shrink: 0; margin-top: 1px; }
-  .autocomplete-item .ac-main { font-weight: 600; }
-  .autocomplete-item .ac-sub { font-size: 11px; color: var(--muted); }
-  .autocomplete-spinner {
-    padding: 10px 13px;
-    font-size: 11px;
-    color: var(--muted);
-    font-style: italic;
-  }
+/* AÉROPORT RESULT */
+.airport-result{margin:0 14px 0;background:#f1f5f9;border:1px solid var(--border);border-radius:8px;padding:10px 12px;font-size:13px;display:none}
+.airport-result.open{display:block}
 
-  /* ── PRINT STYLES ── */
-  @media print {
-    * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
-    body { background: white; font-size: 10px; }
-    .search-banner, .no-print { display: none !important; }
-    .map-container.visible { display: block !important; }
-    .map-container iframe { height: 320px; }
-    .main { padding: 10px 14px; max-width: 100%; }
-    .doc-header { padding: 10px 14px 8px; }
-    .section { break-inside: avoid; margin-bottom: 12px; }
-    .sign-grid { break-inside: avoid; }
-    @page { margin: 1cm; size: A4; }
-  }
+/* BÂTIMENTS */
+.bat-list{padding:8px 14px 0}
+.bat-card{border:1.5px solid var(--border);border-radius:10px;padding:12px;margin-bottom:10px;background:#f8fafc}
+.bat-card .bat-num{font-size:11px;font-weight:700;color:var(--sky);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px}
+.bat-input{width:100%;height:44px;padding:0 12px;border:1.5px solid var(--border);border-radius:8px;font-family:var(--sans);font-size:14px;background:white;outline:none;-webkit-appearance:none;color:var(--text);margin-bottom:6px}
+.bat-input:focus{border-color:var(--sky)}
+.bat-row{display:flex;gap:6px;margin-bottom:0}
+.bat-row .bat-input{margin-bottom:0}
+.add-btn{width:100%;height:var(--tap);border:2px dashed var(--border);border-radius:10px;background:white;font-family:var(--sans);font-size:15px;font-weight:600;color:var(--sky);cursor:pointer;-webkit-appearance:none;margin-top:4px;display:flex;align-items:center;justify-content:center;gap:6px}
+.add-btn:active{background:#eff6ff}
+
+/* ALERT */
+.alert{margin:10px 14px 0;padding:12px 14px;border-left:3px solid;border-radius:8px;font-size:13px;line-height:1.5}
+.alert strong{display:block;font-size:13px;margin-bottom:5px}
+.alert ul{margin-left:16px}
+.alert li{margin-bottom:3px}
+.alert.warn{border-color:var(--accent);background:#fffbeb}
+.alert.info{border-color:var(--sky);background:#eff6ff}
+.alert.danger{border-color:var(--red);background:#fef2f2}
+.alert.success{border-color:var(--green);background:#f0fdf4}
+
+.sub-label{padding:14px 14px 6px;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.07em}
+
+/* SIGNATURES */
+.sign-block{margin:10px 14px 0;border:1.5px solid var(--border);border-radius:10px;overflow:hidden}
+.sign-head{background:var(--sky);color:white;padding:10px 14px;font-weight:700;font-size:13px}
+.sign-body{padding:12px 14px;font-size:13px;line-height:1.8}
+.sign-body .synth{background:#f1f5f9;border-radius:8px;padding:10px 12px;font-size:12px;color:var(--text);line-height:1.7;margin:8px 0}
+.sign-body .synth span{font-weight:700;color:var(--navy)}
+.sign-line{border-bottom:1.5px solid var(--border);margin:16px 0 22px}
+.sign-num{font-family:var(--mono);font-size:12px;color:var(--sky);font-weight:500;margin:4px 0}
+.sign-note{font-size:11px;color:var(--muted);line-height:1.5;margin:6px 0}
+
+/* PDF BUTTON */
+.pdf-btn{display:block;width:calc(100% - 28px);margin:14px 14px 0;height:var(--tap);background:var(--navy);color:white;border:none;border-radius:10px;font-family:var(--sans);font-weight:700;font-size:15px;cursor:pointer;-webkit-appearance:none;display:flex;align-items:center;justify-content:center;gap:8px}
+.pdf-btn:active{opacity:.8}
+
+.doc-footer{background:var(--navy);color:#64748b;font-size:10px;font-family:var(--mono);padding:10px 16px;text-align:center;line-height:1.6;margin-top:8px}
+
+@media print{
+  *{-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important}
+  body{background:white;font-size:11px;padding-bottom:0}
+  .hdr{position:static;box-shadow:none}
+  .search-bar,.hdr-btns,.progress-bar,.add-btn,.pdf-btn,.map-links,.zone-capture-btns,.capture-btn,#captureDelBtn,#captureInput,.zone-capture-label{display:none !important}
+  .zone-capture{padding:8px 0 0 !important}
+  .capture-preview{border:1px solid #ccc !important;margin-bottom:8px}
+  .capture-preview .no-capture{display:none}
+  .hdr-top{margin-bottom:0}
+  .map-wrap.open{display:block !important}
+  .map-wrap iframe{height:160px}
+  .card{box-shadow:none;border:1px solid #ccc;break-inside:avoid;margin-bottom:8px}
+  .card-body{display:block !important}
+  .main{padding:8px}
+  .zone-status.open{display:flex !important}
+  .airport-result{display:block !important}
+  @page{margin:1cm;size:A4}
+}
 </style>
 </head>
 <body>
 
-<!-- HEADER -->
-<div class="doc-header">
-  <div class="doc-header-left">
-    <h1>Fiche Pré-Vol Drone — Captation Bâtiments</h1>
-    <p>DJI Mini 4 Pro · Classe C0 · Catégorie Ouverte A1 · Usage Loisir &amp; Professionnel AMO</p>
-  </div>
-  <div class="doc-header-right">
-    <span class="badge-num">FRAtg5pq5yttf369</span>
-    <span class="badge-label">N° exploitant AlphaTango</span>
-  </div>
-</div>
-
-<!-- SEARCH BANNER -->
-<div class="search-banner no-print">
-  <label>🔍 Vérification des zones de vol</label>
-  <div class="search-row">
-    <div class="autocomplete-wrap">
-      <input class="search-input" id="addressInput" type="text"
-        placeholder="Entrez l'adresse du site…"
-        autocomplete="off"
-        oninput="onAddressInput(event)"
-        onkeydown="onAddressKeydown(event)">
-      <div class="autocomplete-list" id="acList"></div>
+<div class="hdr">
+  <div class="hdr-top">
+    <div>
+      <h1>Fiche Pré-Vol Drone</h1>
+      <p>DJI Mini 4 Pro · C0 · Catégorie Ouverte A1</p>
     </div>
-    <button class="btn btn-geo" onclick="searchZones()">Géoportail Drones</button>
-    <button class="btn btn-geo" onclick="searchAirspace()" style="background:#1a6a4a">Airspace Map</button>
-    <button class="btn btn-print" onclick="window.print()">🖨 Imprimer</button>
+    <div class="badge">FRAtg5pq5yttf369</div>
+  </div>
+  <div class="search-bar">
+    <div class="ac-wrap">
+      <input class="search-input" id="addrInput" type="text" placeholder="Adresse du site…"
+        autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
+        oninput="onInput(event)" onkeydown="onKey(event)">
+      <div class="ac-list" id="acList"></div>
+    </div>
+  </div>
+  <div class="zone-result" id="zoneResult">
+    <span class="zone-icon" id="zoneIcon"></span>
+    <span id="zoneText"></span>
+  </div>
+  <div class="hdr-btns">
+    <button class="btn btn-print" style="flex:1;background:white;color:var(--navy)" onclick="makePdf()">📄 Générer PDF</button>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+</div>
+
+<div class="map-wrap" id="mapWrap">
+  <div class="map-cap" id="mapCap"></div>
+  <iframe id="mapFrame" src="" allowfullscreen loading="lazy"></iframe>
+  <div class="map-links">
+    <a class="map-link-btn mlb-flyby" id="linkFlyby" href="https://app.flyby.aero" target="_blank" rel="noopener">🚁 FlyBy</a>
+    <a class="map-link-btn mlb-geo" id="linkGeo" href="#" target="_blank" rel="noopener">🗺 Cartes.gouv</a>
+    <a class="map-link-btn mlb-not" id="linkNot" href="https://notaminfo.fr" target="_blank" rel="noopener">📋 NOTAM</a>
   </div>
 </div>
 
-<!-- MAP CONTAINER -->
-<div class="map-container" id="mapContainer">
-  <iframe id="mapFrame" src="" allowfullscreen></iframe>
-  <div class="map-caption" id="mapCaption"></div>
-</div>
-
-<!-- MAIN -->
 <div class="main">
 
   <!-- 1. IDENTIFICATION -->
-  <div class="section">
-    <div class="section-head">1 — Identification de la mission <span class="section-num">OBLIGATOIRE</span></div>
-    <div class="section-body">
-      <div class="field-grid">
-        <div class="field-label">Date du vol</div>
-        <div class="field-val"><input type="date" id="dateVol"></div>
-        <div class="field-label">Heure prévue</div>
-        <div class="field-val" style="display:flex;gap:8px;align-items:center">
-          <input type="time" id="heureDebut" style="width:90px"> &nbsp;→&nbsp;
-          <input type="time" id="heureFin" style="width:90px">
-        </div>
-        <div class="field-label">Télépilote</div>
-        <div class="field-val"><input type="text" placeholder="Nom Prénom"></div>
-        <div class="field-label">N° exploitant</div>
-        <div class="field-val"><input type="text" value="FRAtg5pq5yttf369" readonly style="font-family:var(--mono);font-weight:600;color:var(--sky)"></div>
-        <div class="field-label">Objet mission</div>
-        <div class="field-val"><input type="text" placeholder="Ex : Diagnostic visuel toiture — Bâtiment A"></div>
-        <div class="field-label">Client / MO</div>
-        <div class="field-val"><input type="text" placeholder="Maître d'ouvrage ou usage personnel"></div>
-        <div class="field-label">Type de mission</div>
-        <div class="field-val">
-          <div class="inline-checks">
-            <label><input type="checkbox"> Repérage</label>
-            <label><input type="checkbox"> Diagnostic visuel</label>
-            <label><input type="checkbox"> État des lieux</label>
-            <label><input type="checkbox"> Loisir / photo</label>
-            <label><input type="checkbox"> Autre</label>
-          </div>
-        </div>
-        <div class="field-label">Usage</div>
-        <div class="field-val">
-          <div class="inline-checks">
-            <label><input type="checkbox"> Loisir</label>
-            <label><input type="checkbox"> Professionnel / AMO</label>
-          </div>
-        </div>
+  <div class="card open" id="s1">
+    <div class="card-head" onclick="toggle('s1')">
+      <div class="card-head-left">
+        <div class="card-num" style="background:var(--navy)">1</div>
+        <div class="card-title">Identification</div>
+      </div>
+      <span class="card-tag tag-oblig">Obligatoire</span>
+      <div class="status-dot" id="dot-s1"></div>
+      <span class="chevron">⌄</span>
+    </div>
+    <div class="card-body">
+      <div class="field">
+        <label>Date du vol</label>
+        <input type="date" id="f-date" oninput="sync()">
+      </div>
+      <div class="field-row">
+        <div class="field"><label>Heure début</label><input type="time" id="f-hdebut" oninput="sync()"></div>
+        <div class="field"><label>Heure fin</label><input type="time" id="f-hfin" oninput="sync()"></div>
+      </div>
+      <div class="field">
+        <label>Télépilote</label>
+        <input type="text" id="f-pilote" placeholder="Nom Prénom" oninput="sync()">
+      </div>
+      <div class="field">
+        <label>N° exploitant AlphaTango</label>
+        <input type="text" value="FRAtg5pq5yttf369" readonly>
+      </div>
+      <div class="field">
+        <label>Objet de la mission</label>
+        <input type="text" id="f-objet" placeholder="Ex : Captation toiture bâtiment A" oninput="sync()">
+      </div>
+      <div class="field">
+        <label>Client / Maître d'ouvrage</label>
+        <input type="text" id="f-client" placeholder="Nom ou usage personnel" oninput="sync()">
+      </div>
+      <div class="sub-label">Usage</div>
+      <div class="toggle-group">
+        <button class="toggle-btn" onclick="tog(this,'f-usage')">Loisir</button>
+        <button class="toggle-btn" onclick="tog(this,'f-usage')">Professionnel / AMO</button>
+      </div>
+      <div class="sub-label">Type de vol</div>
+      <div class="toggle-group" id="tg-typevol">
+        <button class="toggle-btn" onclick="tog(this,'f-typevol')">Vol intérieur</button>
+        <button class="toggle-btn" onclick="tog(this,'f-typevol')">Vol extérieur</button>
+        <button class="toggle-btn" onclick="tog(this,'f-typevol')">Survol de foule</button>
+        <button class="toggle-btn" onclick="togAutre(this,'f-typevol','autre-typevol')">Autre</button>
+      </div>
+      <div class="autre-field" id="autre-typevol">
+        <input type="text" id="f-typevol-autre" placeholder="Préciser…" oninput="sync()"
+          style="width:100%;height:var(--tap);padding:0 14px;border:1.5px solid var(--border);border-radius:10px;font-family:var(--sans);font-size:15px;background:var(--light);outline:none;-webkit-appearance:none">
       </div>
     </div>
   </div>
 
-  <!-- 2. LOCALISATION -->
-  <div class="section">
-    <div class="section-head sky">2 — Localisation &amp; Vérification du secteur <span class="section-num">OBLIGATOIRE</span></div>
-    <div class="section-body">
-      <div class="field-grid" style="margin-bottom:12px">
-        <div class="field-label">Adresse complète</div>
-        <div class="field-val"><input type="text" id="adresseSite" placeholder="N° rue, ville, code postal"></div>
-        <div class="field-label">GPS décollage</div>
-        <div class="field-val"><input type="text" placeholder="Lat, Lon (optionnel)"></div>
+  <!-- 2. LOCALISATION & ZONES -->
+  <div class="card" id="s2">
+    <div class="card-head" onclick="toggle('s2')">
+      <div class="card-head-left">
+        <div class="card-num" style="background:var(--sky)">2</div>
+        <div class="card-title">Localisation &amp; Zones</div>
+      </div>
+      <span class="card-tag tag-oblig">Obligatoire</span>
+      <div class="status-dot" id="dot-s2"></div>
+      <span class="chevron">⌄</span>
+    </div>
+    <div class="card-body">
+      <div class="field">
+        <label>Adresse du site</label>
+        <input type="text" id="adresseSite" placeholder="Remplie automatiquement" oninput="sync()">
+      </div>
+      <div class="field">
+        <label>Coordonnées GPS</label>
+        <input type="text" id="gpsField" placeholder="Remplies automatiquement">
       </div>
 
-      <div class="alert info" style="margin-bottom:10px">
-        <strong>📡 Sources à consulter avant chaque vol</strong>
-        <ul>
-          <li>Géoportail Drones → <em>geoportail.gouv.fr</em> (couche restrictions drones)</li>
-          <li>Airspace Map → <em>airspace.fr</em></li>
-          <li>NOTAM → <em>notaminfo.fr</em></li>
-        </ul>
+      <!-- ZONE STATUS (résultat vérification aérodromes) -->
+      <div class="zone-status loading" id="zoneStatus" style="display:none">
+        <div class="zone-status-icon" id="zsIcon"></div>
+        <div class="zone-status-text">
+          <span id="zsText"></span>
+          <span class="zone-status-src" id="zsSrc"></span>
+        </div>
       </div>
 
-      <table class="check-table">
-        <thead>
-          <tr>
-            <th style="width:50%">Vérification réglementaire</th>
-            <th class="check-col">OK</th>
-            <th class="check-col">NON</th>
-            <th class="remark-col">Remarques</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Géoportail Drones consulté — couche restrictions</td>
-            <td class="check-col"><input type="checkbox"></td>
-            <td class="check-col"><input type="checkbox"></td>
-            <td><input type="text"></td>
-          </tr>
-          <tr>
-            <td>NOTAM vérifié — aucune restriction active</td>
-            <td class="check-col"><input type="checkbox"></td>
-            <td class="check-col"><input type="checkbox"></td>
-            <td><input type="text"></td>
-          </tr>
-          <tr>
-            <td>Hors zone interdite (aéroport, nucléaire, militaire…)</td>
-            <td class="check-col"><input type="checkbox"></td>
-            <td class="check-col"><input type="checkbox"></td>
-            <td><input type="text"></td>
-          </tr>
-          <tr>
-            <td>Distance aérodrome le plus proche</td>
-            <td class="check-col" colspan="2" style="text-align:left;padding:4px 8px"><input type="text" placeholder="__ km"></td>
-            <td><input type="text"></td>
-          </tr>
-          <tr>
-            <td>Hors zone réglementée R / P / D</td>
-            <td class="check-col"><input type="checkbox"></td>
-            <td class="check-col"><input type="checkbox"></td>
-            <td><input type="text"></td>
-          </tr>
-          <tr>
-            <td>Hauteur bâtiment + 30 m de marge ≤ 120 m</td>
-            <td class="check-col"><input type="checkbox"></td>
-            <td class="check-col"><input type="checkbox"></td>
-            <td><input type="text"></td>
-          </tr>
-          <tr>
-            <td>Météo favorable (vent &lt; 10 m/s, visibilité &gt; 500 m)</td>
-            <td class="check-col"><input type="checkbox"></td>
-            <td class="check-col"><input type="checkbox"></td>
-            <td><input type="text"></td>
-          </tr>
-          <tr>
-            <td>Vol de nuit ? Si oui : autorisation préfectorale obtenue</td>
-            <td class="check-col"><input type="checkbox"></td>
-            <td class="check-col"><input type="checkbox"></td>
-            <td><input type="text"></td>
-          </tr>
-        </tbody>
-      </table>
+      <!-- BLOC CARTE & CAPTURE -->
+      <div class="zone-capture" style="padding-top:14px">
+        <span class="zone-capture-label">Carte de zonage & capture</span>
+
+        <!-- Boutons accès cartes -->
+        <div class="zone-capture-btns">
+          <button class="capture-btn primary" onclick="openFlyby()">🚁 FlyBy</button>
+          <button class="capture-btn secondary" onclick="window.open('https://www.geoportail.gouv.fr/donnees/restrictions-uas-categorie-ouverte-et-aeromodelisme','_blank','noopener')">🗺 Géoportail UAS</button>
+          <button class="capture-btn secondary" style="flex:0 0 auto;padding:0 12px" onclick="openNotam()">📋 NOTAM</button>
+        </div>
+
+        <!-- Capture d'écran -->
+        <span class="zone-capture-label" style="margin-top:6px">Capture de la carte de zonage</span>
+        <div class="zone-capture-btns">
+          <button class="capture-btn primary" onclick="document.getElementById('captureInput').click()">📷 Ajouter capture</button>
+          <button class="capture-btn secondary" id="captureDelBtn" style="display:none" onclick="delCapture()">🗑 Supprimer</button>
+        </div>
+        <input type="file" id="captureInput" accept="image/*" style="display:none" onchange="loadCapture(event)">
+        <div class="capture-preview" id="capturePreview">
+          <div class="no-capture" id="captureEmpty">Aucune capture — appuyez sur "Ajouter capture" après avoir vérifié la zone sur FlyBy ou Cartes.gouv</div>
+          <img id="captureImg" style="display:none" alt="Capture carte zonage">
+        </div>
+
+        <!-- Résultat manuel -->
+        <span class="zone-capture-label" style="margin-top:14px">Résultat de la vérification</span>
+        <div style="display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap">
+          <button class="capture-btn" id="zr-ok" onclick="setZoneResult('ok')"
+            style="flex:1;min-width:90px;background:white;border-color:var(--border);color:var(--text)">✅ Zone libre</button>
+          <button class="capture-btn" id="zr-warn" onclick="setZoneResult('warn')"
+            style="flex:1;min-width:90px;background:white;border-color:var(--border);color:var(--text)">⚠️ Zone sensible</button>
+          <button class="capture-btn" id="zr-nok" onclick="setZoneResult('nok')"
+            style="flex:1;min-width:90px;background:white;border-color:var(--border);color:var(--text)">🚫 Zone interdite</button>
+        </div>
+        <input type="text" id="zoneRemark" placeholder="Précisions sur la zone (ex : CTR Lyon à 4 km, hauteur max 50 m…)"
+          oninput="sync()"
+          style="width:100%;height:44px;padding:0 14px;border:1.5px solid var(--border);border-radius:10px;font-family:var(--sans);font-size:14px;background:var(--light);outline:none;-webkit-appearance:none;color:var(--text)">
+        <div style="display:flex;gap:8px;margin-top:8px">
+          <input type="text" id="zoneSource" placeholder="Source consultée (FlyBy, cartes.gouv…)"
+            style="flex:1;height:40px;padding:0 12px;border:1.5px solid var(--border);border-radius:10px;font-family:var(--sans);font-size:13px;background:var(--light);outline:none;-webkit-appearance:none;color:var(--text)">
+          <input type="datetime-local" id="zoneDate"
+            style="flex:0 0 auto;height:40px;padding:0 10px;border:1.5px solid var(--border);border-radius:10px;font-family:var(--sans);font-size:13px;background:var(--light);outline:none;-webkit-appearance:none;color:var(--text)">
+        </div>
+      </div>
+
+      <div class="alert info" style="margin-top:12px">
+        <strong>ℹ NOTAM</strong>
+        Notices officielles signalant des restrictions temporaires de l'espace aérien (événements, exercices militaires, travaux…). Obligatoire à vérifier avant chaque vol.
+      </div>
+      <div id="airportBlock" class="airport-result" style="margin-top:10px;display:none"></div>
+      <div class="sub-label">Vérifications réglementaires</div>
+      <div class="verify-list" id="verifyList"></div>
     </div>
   </div>
 
   <!-- 3. AUTORISATION -->
-  <div class="section">
-    <div class="section-head">3 — Autorisation propriétaire / responsable <span class="section-num">OBLIGATOIRE</span></div>
-    <div class="section-body">
-      <div style="margin-bottom:10px">
-        <div class="inline-checks">
-          <label><input type="checkbox"> Terrain / bâtiment privé</label>
-          <label><input type="checkbox"> Domaine public / bâtiment communal (autorisation direction)</label>
-        </div>
+  <div class="card" id="s3">
+    <div class="card-head" onclick="toggle('s3')">
+      <div class="card-head-left">
+        <div class="card-num" style="background:var(--navy)">3</div>
+        <div class="card-title">Autorisation propriétaire</div>
       </div>
-      <div class="field-grid">
-        <div class="field-label">Nom / Direction</div>
-        <div class="field-val"><input type="text" placeholder="Nom Prénom ou intitulé de la direction"></div>
-        <div class="field-label">Fonction / Qualité</div>
-        <div class="field-val"><input type="text" placeholder="Ex : DGS, Directeur technique, Propriétaire…"></div>
-        <div class="field-label">Organisme</div>
-        <div class="field-val"><input type="text" placeholder="Collectivité, entreprise, particulier…"></div>
-        <div class="field-label">Contact</div>
-        <div class="field-val"><input type="text" placeholder="Tél. / email"></div>
-        <div class="field-label">Date autorisation</div>
-        <div class="field-val"><input type="date"></div>
-        <div class="field-label">Référence / courrier</div>
-        <div class="field-val"><input type="text" placeholder="N° de courrier ou référence de décision (si applicable)"></div>
+      <span class="card-tag tag-oblig">Obligatoire</span>
+      <div class="status-dot" id="dot-s3"></div>
+      <span class="chevron">⌄</span>
+    </div>
+    <div class="card-body">
+      <div class="sub-label">Type de terrain</div>
+      <div class="toggle-group">
+        <button class="toggle-btn" onclick="tog(this,'f-terrain')">Terrain privé</button>
+        <button class="toggle-btn" onclick="tog(this,'f-terrain')">Domaine public</button>
       </div>
+      <div class="field"><label>Nom / Direction</label><input type="text" id="f-proprio" placeholder="Nom Prénom ou intitulé direction" oninput="sync()"></div>
+      <div class="field"><label>Fonction / Qualité</label><input type="text" id="f-fonction" placeholder="Ex : DGS, Directeur technique…" oninput="sync()"></div>
+      <div class="field"><label>Organisme</label><input type="text" id="f-organisme" placeholder="Collectivité, entreprise, particulier…" oninput="sync()"></div>
+      <div class="field"><label>Contact</label><input type="text" placeholder="Tél. / email"></div>
+      <div class="field"><label>Date d'autorisation</label><input type="date" id="f-dateauth" oninput="sync()"></div>
     </div>
   </div>
 
   <!-- 4. BÂTIMENTS -->
-  <div class="section">
-    <div class="section-head sky">4 — Bâtiments à filmer <span class="section-num">BONNE PRATIQUE</span></div>
-    <div class="section-body">
-      <table class="bat-table">
-        <thead>
-          <tr>
-            <th style="width:80px">N° Bât.</th>
-            <th>Description / localisation sur le site</th>
-            <th style="width:90px">Hauteur est.</th>
-            <th style="width:80px">Occupé ?</th>
-            <th>Particularités (antennes, câbles, verrières…)</th>
-          </tr>
-        </thead>
-        <tbody id="batTable">
-          <tr>
-            <td><input type="text" placeholder="Bât. 1"></td>
-            <td><input type="text"></td>
-            <td><input type="text" placeholder="__ m"></td>
-            <td style="text-align:center"><label><input type="checkbox"> Oui</label></td>
-            <td><input type="text"></td>
-          </tr>
-          <tr>
-            <td><input type="text" placeholder="Bât. 2"></td>
-            <td><input type="text"></td>
-            <td><input type="text" placeholder="__ m"></td>
-            <td style="text-align:center"><label><input type="checkbox"> Oui</label></td>
-            <td><input type="text"></td>
-          </tr>
-          <tr>
-            <td><input type="text" placeholder="Bât. 3"></td>
-            <td><input type="text"></td>
-            <td><input type="text" placeholder="__ m"></td>
-            <td style="text-align:center"><label><input type="checkbox"> Oui</label></td>
-            <td><input type="text"></td>
-          </tr>
-        </tbody>
-      </table>
-      <div style="margin-top:8px;text-align:right" class="no-print">
-        <button class="btn btn-geo" style="font-size:11px;padding:5px 12px" onclick="addBat()">+ Ajouter un bâtiment</button>
+  <div class="card" id="s4">
+    <div class="card-head" onclick="toggle('s4')">
+      <div class="card-head-left">
+        <div class="card-num" style="background:var(--sky)">4</div>
+        <div class="card-title">Bâtiments à filmer</div>
       </div>
-      <div class="field-grid" style="margin-top:10px">
-        <div class="field-label">Faces à filmer</div>
-        <div class="field-val">
-          <div class="inline-checks">
-            <label><input type="checkbox"> Nord</label>
-            <label><input type="checkbox"> Sud</label>
-            <label><input type="checkbox"> Est</label>
-            <label><input type="checkbox"> Ouest</label>
-            <label><input type="checkbox"> Toiture</label>
-          </div>
-        </div>
-        <div class="field-label">Altitude max prévue</div>
-        <div class="field-val"><input type="text" placeholder="__ m (≤ 120 m)"></div>
+      <span class="card-tag tag-prat">Pratique</span>
+      <div class="status-dot" id="dot-s4"></div>
+      <span class="chevron">⌄</span>
+    </div>
+    <div class="card-body">
+      <div class="bat-list" id="batList"></div>
+      <div style="padding:0 14px"><button class="add-btn" onclick="addBat()">＋ Ajouter un bâtiment</button></div>
+      <div class="field"><label>Altitude max de vol prévue</label><input type="text" placeholder="__ m (≤ 120 m)"></div>
+      <div class="sub-label">Faces à filmer</div>
+      <div class="toggle-group">
+        <button class="toggle-btn" onclick="tog(this)">Nord</button>
+        <button class="toggle-btn" onclick="tog(this)">Sud</button>
+        <button class="toggle-btn" onclick="tog(this)">Est</button>
+        <button class="toggle-btn" onclick="tog(this)">Ouest</button>
+        <button class="toggle-btn" onclick="tog(this)">Toiture</button>
       </div>
     </div>
   </div>
 
   <!-- 5. PÉRIMÈTRE -->
-  <div class="section">
-    <div class="section-head orange">5 — Périmètre de sécurité &amp; environnement immédiat <span class="section-num">BONNE PRATIQUE</span></div>
-    <div class="section-body">
-      <table class="check-table">
-        <thead>
-          <tr>
-            <th style="width:50%">Élément à identifier autour du bâtiment</th>
-            <th class="check-col">Présent</th>
-            <th>Observations / distances</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td>Lignes électriques / câbles aériens</td><td class="check-col"><input type="checkbox"></td><td><input type="text" style="width:100%"></td></tr>
-          <tr><td>Antennes / mâts / équipements en toiture</td><td class="check-col"><input type="checkbox"></td><td><input type="text" style="width:100%"></td></tr>
-          <tr><td>Arbres ou obstacles en hauteur</td><td class="check-col"><input type="checkbox"></td><td><input type="text" style="width:100%"></td></tr>
-          <tr><td>Voies de circulation / stationnements proches</td><td class="check-col"><input type="checkbox"></td><td><input type="text" style="width:100%"></td></tr>
-          <tr><td>Bâtiments adjacents / mitoyens</td><td class="check-col"><input type="checkbox"></td><td><input type="text" style="width:100%"></td></tr>
-          <tr><td>Travaux / chantier en cours</td><td class="check-col"><input type="checkbox"></td><td><input type="text" style="width:100%"></td></tr>
-        </tbody>
-      </table>
-      <div class="field-grid" style="margin-top:8px">
-        <div class="field-label">Périmètre de sécurité</div>
-        <div class="field-val"><input type="text" placeholder="Rayon défini (ex : 10 m autour du bâtiment)"></div>
-        <div class="field-label">Zone de décollage</div>
-        <div class="field-val"><input type="text" placeholder="Description de la zone choisie"></div>
+  <div class="card" id="s5">
+    <div class="card-head" onclick="toggle('s5')">
+      <div class="card-head-left">
+        <div class="card-num" style="background:var(--orange)">5</div>
+        <div class="card-title">Périmètre de sécurité</div>
       </div>
+      <span class="card-tag tag-prat">Pratique</span>
+      <div class="status-dot" id="dot-s5"></div>
+      <span class="chevron">⌄</span>
+    </div>
+    <div class="card-body">
+      <div class="checklist" id="periChecklist"></div>
+      <div class="field"><label>Périmètre défini</label><input type="text" placeholder="Ex : rayon 10 m autour du bâtiment"></div>
+      <div class="field"><label>Zone de décollage</label><input type="text" placeholder="Description de la zone choisie"></div>
     </div>
   </div>
 
   <!-- 6. PERSONNES & RGPD -->
-  <div class="section">
-    <div class="section-head red">6 — Personnes présentes &amp; vie privée (RGPD) <span class="section-num">OBLIGATOIRE</span></div>
-    <div class="section-body">
-      <div class="alert danger" style="margin-bottom:10px">
-        <strong>⚠ Rappel — Obligations légales</strong>
+  <div class="card" id="s6">
+    <div class="card-head" onclick="toggle('s6')">
+      <div class="card-head-left">
+        <div class="card-num" style="background:var(--red)">6</div>
+        <div class="card-title">Personnes &amp; RGPD</div>
+      </div>
+      <span class="card-tag tag-oblig">Obligatoire</span>
+      <div class="status-dot" id="dot-s6"></div>
+      <span class="chevron">⌄</span>
+    </div>
+    <div class="card-body">
+      <div class="alert danger">
+        <strong>⚠ Rappel légal</strong>
         <ul>
-          <li>Informer les occupants du bâtiment avant le vol</li>
-          <li>Ne pas filmer l'intérieur des logements / bureaux à travers les ouvertures</li>
-          <li>Flouter toute personne identifiable avant diffusion ou archivage</li>
-          <li>Stocker les données conformément à la politique RGPD de votre organisme</li>
+          <li>Informer les occupants avant le vol</li>
+          <li>Ne pas filmer l'intérieur des locaux</li>
+          <li>Flouter toute personne identifiable avant diffusion</li>
         </ul>
       </div>
-      <div class="check-grid">
-        <div class="check-item"><input type="checkbox"> Occupants du bâtiment informés du vol</div>
-        <div class="check-item"><input type="checkbox"> Personnel / agents présents prévenus</div>
-        <div class="check-item"><input type="checkbox"> Périmètre balisé si nécessaire</div>
-        <div class="check-item"><input type="checkbox"> Personnes non impliquées éloignées</div>
-        <div class="check-item"><input type="checkbox"> Panneau d'information temporaire posé</div>
-        <div class="check-item"><input type="checkbox"> Consentement recueilli si personnes filmées</div>
-      </div>
+      <div class="checklist" id="rgpdChecklist"></div>
     </div>
   </div>
 
   <!-- 7. CHECKLIST -->
-  <div class="section">
-    <div class="section-head green">7 — Checklist pré-vol matériel <span class="section-num">BONNE PRATIQUE</span></div>
-    <div class="section-body">
-      <div style="font-weight:600;font-size:11px;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.05em">Matériel</div>
-      <div class="check-grid" style="margin-bottom:12px">
-        <div class="check-item"><input type="checkbox"> Batterie drone chargée (&gt; 80 %)</div>
-        <div class="check-item"><input type="checkbox"> Batterie télécommande chargée</div>
-        <div class="check-item"><input type="checkbox"> Carte SD insérée / formatée</div>
-        <div class="check-item"><input type="checkbox"> Hélices vérifiées (pas de fissure)</div>
-        <div class="check-item"><input type="checkbox"> N° exploitant apposé sur le drone</div>
-        <div class="check-item"><input type="checkbox"> Optique / caméra propre</div>
-        <div class="check-item"><input type="checkbox"> Application DJI Fly à jour</div>
-        <div class="check-item"><input type="checkbox"> Firmware drone à jour</div>
+  <div class="card" id="s7">
+    <div class="card-head" onclick="toggle('s7')">
+      <div class="card-head-left">
+        <div class="card-num" style="background:var(--green)">7</div>
+        <div class="card-title">Checklist matériel</div>
       </div>
-      <div style="font-weight:600;font-size:11px;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.05em">Avant décollage (DJI Fly)</div>
-      <div class="check-grid">
-        <div class="check-item"><input type="checkbox"> GPS &gt; 10 satellites</div>
-        <div class="check-item"><input type="checkbox"> Point de retour (RTH) configuré</div>
-        <div class="check-item"><input type="checkbox"> Altitude max configurée (≤ 120 m)</div>
-        <div class="check-item"><input type="checkbox"> Zones DJI vérifiées dans l'app</div>
-        <div class="check-item"><input type="checkbox"> Test moteurs OK au sol</div>
-        <div class="check-item"><input type="checkbox"> Stabilisation caméra vérifiée</div>
-      </div>
+      <span class="card-tag tag-prat">Pratique</span>
+      <div class="status-dot" id="dot-s7"></div>
+      <span class="chevron">⌄</span>
+    </div>
+    <div class="card-body">
+      <div class="sub-label">Matériel</div>
+      <div class="checklist" id="materielChecklist"></div>
+      <div class="sub-label">Avant décollage (DJI Fly)</div>
+      <div class="checklist" id="djiflyChecklist"></div>
     </div>
   </div>
 
   <!-- 8. VIGILANCES -->
-  <div class="section">
-    <div class="section-head orange">8 — Vigilances spécifiques bâtiments <span class="section-num">BONNE PRATIQUE</span></div>
-    <div class="section-body">
+  <div class="card" id="s8">
+    <div class="card-head" onclick="toggle('s8')">
+      <div class="card-head-left">
+        <div class="card-num" style="background:var(--orange)">8</div>
+        <div class="card-title">Vigilances bâtiments</div>
+      </div>
+      <span class="card-tag tag-prat">Pratique</span>
+      <div class="status-dot" id="dot-s8"></div>
+      <span class="chevron">⌄</span>
+    </div>
+    <div class="card-body">
       <div class="alert warn">
-        <strong>⚠ Risques propres au survol de bâtiments</strong>
+        <strong>⚠ Risques spécifiques</strong>
         <ul>
-          <li>Effet de vent de façade : turbulences — maintenir ≥ 5 m des murs</li>
-          <li>Masque GPS en zone urbaine dense : surveiller en permanence</li>
-          <li>Équipements en toiture non visibles depuis le sol (CTA, extracteurs…)</li>
-          <li>Câbles de façade discrets (fibre, antenne, jardinière) — inspecter avant vol</li>
-          <li>Fenêtres ouvertes : maintenir une distance horizontale suffisante</li>
+          <li>Vent de façade — maintenir ≥ 5 m des murs</li>
+          <li>Masque GPS en zone urbaine — surveiller en permanence</li>
+          <li>Équipements en toiture non visibles depuis le sol</li>
+          <li>Câbles de façade discrets — inspecter avant vol</li>
+          <li>Fenêtres ouvertes — maintenir une distance suffisante</li>
         </ul>
       </div>
-      <div class="alert success">
+      <div class="alert success" style="margin-top:10px">
         <strong>✔ Bonnes pratiques</strong>
         <ul>
-          <li>Tour de reconnaissance à faible vitesse avant la captation effective</li>
-          <li>Filmer façade par façade : N → E → S → O → toiture</li>
-          <li>Ne jamais s'approcher à moins de 3 m d'une façade, 5 m d'une toiture</li>
-          <li>Garder le drone en vue visuelle directe (VLOS) en permanence</li>
+          <li>Tour de reconnaissance à faible vitesse d'abord</li>
+          <li>Façade par façade : N → E → S → O → toiture</li>
+          <li>VLOS obligatoire — garder le drone en vue permanente</li>
         </ul>
       </div>
-      <div class="field-grid">
-        <div class="field-label">Vigilances spécifiques site</div>
-        <div class="field-val tall"><textarea placeholder="Observations particulières identifiées sur ce site…"></textarea></div>
+      <div class="field" style="margin-top:4px">
+        <label>Notes spécifiques au site</label>
+        <textarea placeholder="Observations identifiées sur ce site…"></textarea>
       </div>
     </div>
   </div>
 
-  <!-- 9. COMPTE-RENDU -->
-  <div class="section">
-    <div class="section-head">9 — Compte-rendu de vol <span class="section-num">BONNE PRATIQUE</span></div>
-    <div class="section-body">
-      <div class="field-grid">
-        <div class="field-label">Heure décollage effectif</div>
-        <div class="field-val"><input type="time"></div>
-        <div class="field-label">Heure atterrissage</div>
-        <div class="field-val"><input type="time"></div>
-        <div class="field-label">Altitude max atteinte</div>
-        <div class="field-val"><input type="text" placeholder="__ m"></div>
-        <div class="field-label">Fichiers enregistrés</div>
-        <div class="field-val"><input type="text" placeholder="Nb fichiers / format (MP4, DNG…)"></div>
-        <div class="field-label">Incidents / anomalies</div>
-        <div class="field-val tall"><textarea placeholder="RAS ou description…"></textarea></div>
-        <div class="field-label">Observations</div>
-        <div class="field-val tall"><textarea placeholder="Remarques générales sur la mission…"></textarea></div>
+  <!-- 9. SIGNATURES -->
+  <div class="card" id="s9">
+    <div class="card-head" onclick="toggle('s9')">
+      <div class="card-head-left">
+        <div class="card-num" style="background:var(--sky)">9</div>
+        <div class="card-title">Signatures</div>
       </div>
+      <span class="card-tag tag-oblig">Obligatoire</span>
+      <div class="status-dot" id="dot-s9"></div>
+      <span class="chevron">⌄</span>
     </div>
-  </div>
+    <div class="card-body">
 
-  <!-- 10. SIGNATURES -->
-  <div class="section">
-    <div class="section-head">10 — Autorisation &amp; Signatures</div>
-    <div class="section-body">
-      <div class="sign-grid">
-        <div class="sign-box">
-          <div class="sign-head">Propriétaire / Responsable du site</div>
-          <div class="sign-body">
-            <p>Je soussigné(e) :</p>
-            <p>Nom / Prénom : <span style="border-bottom:1px solid #ccc;display:inline-block;width:160px">&nbsp;</span></p>
-            <p>Qualité : <span style="border-bottom:1px solid #ccc;display:inline-block;width:180px">&nbsp;</span></p>
-            <p style="margin-top:6px;font-size:10px;color:var(--muted)">autorise la réalisation du vol de drone décrit ci-dessus sur le site concerné et atteste avoir été informé(e) des conditions de captation.</p>
-            <div class="sign-line"></div>
-            <p style="font-size:10px">Fait à <span style="border-bottom:1px solid #ccc;display:inline-block;width:100px">&nbsp;</span> le <span style="border-bottom:1px solid #ccc;display:inline-block;width:80px">&nbsp;</span></p>
+      <div class="sign-block">
+        <div class="sign-head">Récapitulatif de la mission</div>
+        <div class="sign-body">
+          <div class="synth" id="synthBlock">
+            Remplissez les sections précédentes pour générer automatiquement le récapitulatif.
           </div>
-        </div>
-        <div class="sign-box">
-          <div class="sign-head">Télépilote — Engagement de responsabilité</div>
-          <div class="sign-body">
-            <p>Je soussigné(e) :</p>
-            <p>Nom / Prénom : <span style="border-bottom:1px solid #ccc;display:inline-block;width:160px">&nbsp;</span></p>
-            <p style="font-family:var(--mono);font-size:10px;color:var(--sky)">N° exploitant : FRAtg5pq5yttf369</p>
-            <p style="margin-top:6px;font-size:10px;color:var(--muted)">certifie avoir respecté l'ensemble des obligations réglementaires (DGAC, RGPD) et les règles de sécurité applicables à cette mission.</p>
-            <div class="sign-line"></div>
-            <p style="font-size:10px">Fait à <span style="border-bottom:1px solid #ccc;display:inline-block;width:100px">&nbsp;</span> le <span style="border-bottom:1px solid #ccc;display:inline-block;width:80px">&nbsp;</span></p>
+          <!-- Capture zonage dans la signature -->
+          <div id="synthCapture" style="display:none;margin-top:10px">
+            <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">Carte de zonage vérifiée</div>
+            <img id="synthCaptureImg" src="" alt="Capture zonage" style="width:100%;border-radius:8px;border:1px solid var(--border)">
           </div>
         </div>
       </div>
+
+      <!-- Signature propriétaire -->
+      <div class="sign-block" style="margin-top:12px">
+        <div class="sign-head">Propriétaire / Responsable du site</div>
+        <div class="sign-body">
+          <div>Je soussigné(e) : <strong id="sg-proprio">_______________</strong></div>
+          <div>Qualité : <strong id="sg-fonction">_______________</strong></div>
+          <div>Organisme : <strong id="sg-organisme">_______________</strong></div>
+          <div class="sign-note">autorise la réalisation du vol de drone décrit ci-dessus sur le site concerné et atteste avoir été informé(e) des conditions de captation et des règles de sécurité applicables.</div>
+          <div class="sign-line"></div>
+          <div class="field-row">
+            <div class="field" style="padding:0"><input type="text" placeholder="Fait à…"></div>
+            <div class="field" style="padding:0"><input type="date"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Signature télépilote -->
+      <div class="sign-block" style="margin-top:12px">
+        <div class="sign-head">Télépilote — Engagement de responsabilité</div>
+        <div class="sign-body">
+          <div>Je soussigné(e) : <strong id="sg-pilote">_______________</strong></div>
+          <div class="sign-num">N° exploitant AlphaTango : FRAtg5pq5yttf369</div>
+          <div class="sign-note">certifie avoir respecté l'ensemble des obligations réglementaires (DGAC, RGPD) et les règles de sécurité applicables à cette mission.</div>
+          <div class="sign-line"></div>
+          <div class="field-row">
+            <div class="field" style="padding:0"><input type="text" id="sg-lieupilote" placeholder="Fait à…"></div>
+            <div class="field" style="padding:0"><input type="date" id="sg-datepilote"></div>
+          </div>
+        </div>
+      </div>
+
+      <button class="pdf-btn" onclick="makePdf()" style="margin-top:16px;background:var(--navy);font-size:16px;height:58px;border-radius:12px">📄 Générer le PDF à faire signer</button>
     </div>
   </div>
 
-</div><!-- /main -->
+</div>
 
-<!-- FOOTER -->
 <div class="doc-footer">
-  <span>Règlement (UE) 2019/947 · DGAC AlphaTango · RGPD (UE) 2016/679</span>
-  <span>Document à conserver 3 ans · DJI Mini 4 Pro &lt;250 g · Classe C0 · Catégorie Ouverte A1</span>
+  Règlement (UE) 2019/947 · DGAC AlphaTango · RGPD (UE) 2016/679<br>
+  Document à conserver 3 ans · DJI Mini 4 Pro &lt;250 g · Classe C0
 </div>
 
 <script>
-function searchZones() {
-  const addr = document.getElementById('addressInput').value.trim();
-  if (!addr) { alert('Veuillez saisir une adresse.'); return; }
-  const encoded = encodeURIComponent(addr);
-  const url = `https://www.geoportail.gouv.fr/carte?c=${encoded}&z=14&l0=GEOGRAPHICALGRIDSYSTEMS.MAPS.SCAN-EXPRESS.STANDARD::GEOPORTAIL:OGC:WMTS(1)&l1=Restrictions.RestrictionDrones::GEOPORTAIL:OGC:WMTS(1)&permalink=yes`;
-  const container = document.getElementById('mapContainer');
-  document.getElementById('mapFrame').src = url;
-  document.getElementById('mapCaption').textContent = '📍 Géoportail Drones — ' + addr;
-  container.classList.add('visible');
-  // Copier l'adresse dans le champ site
-  const siteField = document.getElementById('adresseSite');
-  if (!siteField.value) siteField.value = addr;
-  container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+// ─── DATA ───
+const verifyItems = [
+  "NOTAM vérifié — aucune restriction active",
+  "Hors zone interdite (aéroport, nucléaire, militaire…)",
+  "Hors zone réglementée R / P / D",
+  "Hauteur bâtiment + 30 m de marge ≤ 120 m",
+  "Météo favorable (vent, visibilité, précipitations)",
+  "Vol de nuit ? Si oui : autorisation préfectorale obtenue"
+];
+const periItems = [
+  "Lignes électriques / câbles aériens identifiés",
+  "Antennes / mâts / équipements en toiture repérés",
+  "Arbres ou obstacles en hauteur identifiés",
+  "Voies de circulation / stationnements proches",
+  "Bâtiments adjacents / mitoyens",
+  "Travaux / chantier en cours dans le secteur"
+];
+const rgpdItems = [
+  "Occupants du bâtiment informés du vol",
+  "Personnel / agents présents prévenus",
+  "Périmètre balisé si nécessaire",
+  "Personnes non impliquées éloignées du périmètre",
+  "Panneau d'information temporaire posé si nécessaire",
+  "Consentement recueilli si personnes susceptibles d'être filmées"
+];
+const materielItems = [
+  "Batterie drone chargée (> 80 %)",
+  "Batterie télécommande chargée",
+  "Carte SD insérée et formatée",
+  "Hélices vérifiées — pas de fissure",
+  "N° exploitant apposé sur le drone",
+  "Optique / caméra propre",
+  "Application DJI Fly à jour",
+  "Firmware drone à jour"
+];
+const djiflyItems = [
+  "GPS > 10 satellites",
+  "Point de retour (RTH) configuré",
+  "Altitude max configurée (≤ 120 m)",
+  "Zones DJI vérifiées dans l'app",
+  "Test moteurs OK au sol",
+  "Stabilisation caméra vérifiée"
+];
+
+// ─── BUILD ───
+function buildVerify() {
+  const c = document.getElementById('verifyList');
+  verifyItems.forEach((txt, i) => {
+    const d = document.createElement('div');
+    d.className = 'verify-item';
+    d.innerHTML = `<div class="verify-item-head" onclick="toggleVR(${i})">
+      <div class="verify-label">${txt}</div>
+      <div class="verify-btns">
+        <button class="vbtn" id="vok${i}" onclick="setV(event,${i},'ok')">✓</button>
+        <button class="vbtn" id="vnok${i}" onclick="setV(event,${i},'nok')">✗</button>
+        <button class="vbtn" id="vna${i}" onclick="setV(event,${i},'na')">/</button>
+      </div></div>
+      <div class="verify-remark" id="vr${i}"><input type="text" placeholder="Remarque…"></div>`;
+    c.appendChild(d);
+  });
+}
+function toggleVR(i){document.getElementById(`vr${i}`).classList.toggle('open')}
+function setV(e,i,v){
+  e.stopPropagation();
+  ['ok','nok','na'].forEach(x=>document.getElementById(`v${x}${i}`).classList.remove(x));
+  document.getElementById(`v${v}${i}`).classList.add(v);
+  updateProgress();
 }
 
-function searchAirspace() {
-  const addr = document.getElementById('addressInput').value.trim();
-  if (!addr) { alert('Veuillez saisir une adresse.'); return; }
-  // Geocoding via Nominatim pour obtenir lat/lon
-  fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(addr)}&format=json&limit=1`)
-    .then(r => r.json())
-    .then(data => {
-      let url;
-      if (data && data[0]) {
-        const lat = parseFloat(data[0].lat).toFixed(5);
-        const lon = parseFloat(data[0].lon).toFixed(5);
-        url = `https://www.airspace.fr/#14/${lat}/${lon}`;
-      } else {
-        url = `https://www.airspace.fr/`;
-      }
-      const container = document.getElementById('mapContainer');
-      document.getElementById('mapFrame').src = url;
-      document.getElementById('mapCaption').textContent = '📍 Airspace Map — ' + addr;
-      container.classList.add('visible');
-      const siteField = document.getElementById('adresseSite');
-      if (!siteField.value) siteField.value = addr;
-      container.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    })
-    .catch(() => {
-      window.open('https://www.airspace.fr/', '_blank');
-    });
+function buildChecklist(id, items) {
+  const c = document.getElementById(id);
+  items.forEach(txt => {
+    const d = document.createElement('div');
+    d.className = 'check-item';
+    d.innerHTML = `<div class="check-box"></div><div class="check-label">${txt}</div>`;
+    d.onclick = function(){
+      this.classList.toggle('checked');
+      this.querySelector('.check-box').textContent = this.classList.contains('checked') ? '✓' : '';
+      updateProgress();
+    };
+    c.appendChild(d);
+  });
 }
 
+let batCount = 0;
 function addBat() {
-  const tbody = document.getElementById('batTable');
-  const n = tbody.rows.length + 1;
-  const tr = document.createElement('tr');
-  tr.innerHTML = `
-    <td><input type="text" placeholder="Bât. ${n}"></td>
-    <td><input type="text"></td>
-    <td><input type="text" placeholder="__ m"></td>
-    <td style="text-align:center"><label><input type="checkbox"> Oui</label></td>
-    <td><input type="text"></td>`;
-  tbody.appendChild(tr);
+  batCount++;
+  const d = document.createElement('div');
+  d.className = 'bat-card';
+  d.innerHTML = `<div class="bat-num">Bâtiment ${batCount}</div>
+    <input class="bat-input" type="text" placeholder="Description / localisation sur le site">
+    <div class="bat-row">
+      <input class="bat-input" type="text" placeholder="Hauteur est. (m)" style="flex:0 0 120px">
+      <input class="bat-input" type="text" placeholder="Particularités (antennes, câbles…)">
+    </div>`;
+  document.getElementById('batList').appendChild(d);
 }
 
-// Pré-remplir la date du jour
-document.getElementById('dateVol').valueAsDate = new Date();
+// ─── TOGGLE ───
+function toggle(id){document.getElementById(id).classList.toggle('open')}
+
+function tog(btn, fieldId) {
+  btn.classList.toggle('on');
+  sync();
+}
+
+function togAutre(btn, fieldId, autreId) {
+  btn.classList.toggle('on');
+  const af = document.getElementById(autreId);
+  // Show autre field if Autre is on
+  af.classList.toggle('open', btn.classList.contains('on'));
+  sync();
+}
+
+// ─── SYNTH SIGNATURES ───
+function sync() {
+  const get = id => { const el = document.getElementById(id); return el ? el.value.trim() : ''; };
+  const date = get('f-date');
+  const hdebut = get('f-hdebut');
+  const hfin = get('f-hfin');
+  const pilote = get('f-pilote');
+  const objet = get('f-objet');
+  const client = get('f-client');
+  const adresse = get('adresseSite');
+  const proprio = get('f-proprio');
+  const fonction = get('f-fonction');
+  const organisme = get('f-organisme');
+
+  // Active toggles
+  const usageOn = [...document.querySelectorAll('#s1 .toggle-btn.on')].map(b=>b.textContent).join(', ');
+  const typeOn  = [...document.querySelectorAll('#tg-typevol .toggle-btn.on')].map(b=>b.textContent).join(', ');
+  const autreType = get('f-typevol-autre');
+  const typeLabel = typeOn + (autreType ? (typeOn ? ', ' : '') + autreType : '');
+
+  const fmt = (label, val) => val
+    ? `<div><span>${label} :</span> ${val}</div>`
+    : `<div style="color:#94a3b8"><span>${label} :</span> non renseigné</div>`;
+
+  const zoneRemark = get('zoneRemark');
+  const zoneSource = get('zoneSource');
+  const zoneLabels = {ok:'✅ Zone libre', warn:'⚠️ Zone sensible', nok:'🚫 Zone interdite', '':'Non renseigné'};
+  const zoneLabel  = zoneLabels[zoneResultVal] || 'Non renseigné';
+
+  document.getElementById('synthBlock').innerHTML =
+    fmt('Date', date ? new Date(date).toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long',year:'numeric'}) : '') +
+    fmt('Horaires', hdebut && hfin ? `${hdebut} → ${hfin}` : hdebut || '') +
+    fmt('Télépilote', pilote) +
+    fmt('Objet', objet) +
+    fmt('Client / MO', client) +
+    fmt('Site', adresse) +
+    fmt('Usage', usageOn) +
+    fmt('Type de vol', typeLabel) +
+    fmt('Vérification zones', zoneLabel + (zoneRemark ? ' — ' + zoneRemark : '')) +
+    fmt('Source / date vérif.', zoneSource);
+
+  // Signatures auto-fill
+  document.getElementById('sg-proprio').textContent = proprio || '_______________';
+  document.getElementById('sg-fonction').textContent = fonction || '_______________';
+  document.getElementById('sg-organisme').textContent = organisme || '_______________';
+  document.getElementById('sg-pilote').textContent = pilote || '_______________';
+
+  // Date signature auto
+  const sgdate = document.getElementById('sg-datepilote');
+  if (!sgdate.value && date) sgdate.value = date;
+
+  updateProgress();
+}
+
+// ─── PROGRESS ───
+function updateProgress() {
+  const fields = document.querySelectorAll('input[type=text]:not([readonly]),input[type=date],input[type=time]');
+  let f=0; fields.forEach(el=>{if(el.value.trim())f++});
+  const ch = document.querySelectorAll('.check-item.checked').length;
+  const tot = fields.length + document.querySelectorAll('.check-item').length;
+  document.getElementById('progressFill').style.width = Math.min(100,Math.round((f+ch)/tot*100))+'%';
+}
+
+// ─── AUTOCOMPLETE ───
+let acResults=[],acIndex=-1,acTimer=null;
+function onInput(e){
+  const v=e.target.value.trim();
+  clearTimeout(acTimer);
+  if(v.length<3){closeAc();return}
+  acTimer=setTimeout(()=>fetchAc(v),340);
+}
+function fetchAc(q){
+  const list=document.getElementById('acList');
+  list.innerHTML='<div class="ac-spin">Recherche…</div>';
+  list.classList.add('open'); acIndex=-1;
+  fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(q)}&format=json&addressdetails=1&limit=7&countrycodes=fr&accept-language=fr`)
+    .then(r=>r.json()).then(d=>{acResults=d;renderAc(d)})
+    .catch(()=>{list.innerHTML='<div class="ac-spin">Erreur réseau</div>'});
+}
+function renderAc(data){
+  const list=document.getElementById('acList');
+  if(!data||!data.length){list.innerHTML='<div class="ac-spin">Aucun résultat</div>';return}
+  list.innerHTML=data.map((item,i)=>{
+    const a=item.address||{};
+    const main=[a.house_number,a.road].filter(Boolean).join(' ')||item.display_name.split(',')[0];
+    const sub=[a.postcode,a.city||a.town||a.village||a.municipality].filter(Boolean).join(' ');
+    return `<div class="ac-item" onmousedown="selAc(${i})"><span>📍</span><div><div class="ac-main">${main}</div><div class="ac-sub">${sub}</div></div></div>`;
+  }).join('');
+  list.classList.add('open');
+}
+function selAc(i){
+  const item=acResults[i]; if(!item)return;
+  const inp=document.getElementById('addrInput');
+  inp.value=item.display_name; inp.dataset.lat=item.lat; inp.dataset.lon=item.lon;
+  const sf=document.getElementById('adresseSite'); if(!sf.value)sf.value=item.display_name;
+  const gf=document.getElementById('gpsField');
+  if(!gf.value)gf.value=`${parseFloat(item.lat).toFixed(5)}, ${parseFloat(item.lon).toFixed(5)}`;
+  closeAc(); sync();
+}
+function onKey(e){
+  const list=document.getElementById('acList');
+  const items=list.querySelectorAll('.ac-item');
+  if(!list.classList.contains('open')){if(e.key==='Enter')checkZone();return}
+  if(e.key==='ArrowDown'){e.preventDefault();acIndex=Math.min(acIndex+1,items.length-1);items.forEach((el,i)=>el.classList.toggle('active',i===acIndex))}
+  else if(e.key==='ArrowUp'){e.preventDefault();acIndex=Math.max(acIndex-1,-1);items.forEach((el,i)=>el.classList.toggle('active',i===acIndex))}
+  else if(e.key==='Enter'){e.preventDefault();if(acIndex>=0&&acResults[acIndex])selAc(acIndex);else{closeAc();checkZone()}}
+  else if(e.key==='Escape')closeAc();
+}
+function closeAc(){document.getElementById('acList').classList.remove('open');acIndex=-1}
+document.addEventListener('click',e=>{if(!e.target.closest('.ac-wrap'))closeAc()});
+
+// ─── COORDS ───
+function getCoords(cb){
+  const inp=document.getElementById('addrInput');
+  const addr=inp.value.trim();
+  if(!addr){alert('Saisissez une adresse d\'abord.');return}
+  if(inp.dataset.lat){cb(addr,parseFloat(inp.dataset.lat),parseFloat(inp.dataset.lon));return}
+  fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(addr)}&format=json&limit=1&countrycodes=fr`)
+    .then(r=>r.json()).then(d=>{
+      if(d&&d[0]){inp.dataset.lat=d[0].lat;inp.dataset.lon=d[0].lon;cb(addr,parseFloat(d[0].lat),parseFloat(d[0].lon))}
+      else cb(addr,null,null)
+    }).catch(()=>cb(addr,null,null));
+}
+
+// ─── ZONE CHECK (Overpass API — données OSM zones aériennes) ───
+function showZoneResult(cls, icon, text){
+  const r=document.getElementById('zoneResult');
+  r.className='zone-result open '+cls;
+  document.getElementById('zoneIcon').textContent=icon;
+  document.getElementById('zoneText').textContent=text;
+}
+
+function checkZone(){
+  showZoneResult('loading','⏳','Vérification en cours…');
+  getCoords((addr,lat,lon)=>{
+    if(!lat||!lon){showZoneResult('warn','⚠️','Adresse non géolocalisée — vérifiez manuellement');return}
+
+    // OSM Overpass : cherche zones de contrôle aérien, zones P/R/D dans un rayon de 5 km
+    const query=`[out:json][timeout:10];
+(
+  node["aeroway"="aerodrome"](around:5000,${lat},${lon});
+  way["aeroway"="aerodrome"](around:5000,${lat},${lon});
+  relation["aeroway"="aerodrome"](around:5000,${lat},${lon});
+  node["aeroway"="airstrip"](around:3000,${lat},${lon});
+  way["aeroway"="runway"](around:3000,${lat},${lon});
+);
+out body;`;
+
+    fetch('https://overpass-api.de/api/interpreter',{method:'POST',body:query})
+      .then(r=>r.json())
+      .then(data=>{
+        const elements=data.elements||[];
+        // Aérodromes trouvés
+        const aerodromes=elements.filter(e=>e.tags&&(e.tags.aeroway==='aerodrome'||e.tags.name));
+        if(aerodromes.length>0){
+          const names=aerodromes.map(e=>e.tags.name||e.tags['name:fr']||'Aérodrome').filter((v,i,a)=>a.indexOf(v)===i).join(', ');
+          showZoneResult('warn','⚠️',`Zone sensible : ${names} dans un rayon de 5 km — vérifiez sur Géoportail`);
+          document.getElementById('airportBlock').className='airport-result open';
+          document.getElementById('airportBlock').innerHTML=`<strong>✈️ Aérodrome(s) détecté(s) à proximité :</strong><br>${names}<br><small style="color:var(--muted)">Vérifiez les restrictions exactes sur Géoportail Drones</small>`;
+        } else {
+          showZoneResult('safe','✅','Aucun aérodrome détecté dans un rayon de 5 km — vérifiez NOTAM et Géoportail');
+          document.getElementById('airportBlock').className='airport-result open';
+          document.getElementById('airportBlock').innerHTML=`<strong>✅ Aucun aérodrome dans un rayon de 5 km</strong><br><small style="color:var(--muted)">Vérifiez tout de même NOTAM et la couche restrictions sur Géoportail</small>`;
+        }
+        // Affiche la carte OSM
+        showOsmMap(addr,lat,lon);
+        // Recherche aérodrome le plus proche pour la section 2
+        findNearestAirport(lat,lon);
+      })
+      .catch(()=>{
+        showZoneResult('warn','⚠️','Impossible de vérifier automatiquement — ouvrez Géoportail');
+        showOsmMap(addr,lat,lon);
+      });
+  });
+}
+
+function findNearestAirport(lat,lon){
+  const q=`[out:json][timeout:10];
+(node["aeroway"="aerodrome"](around:30000,${lat},${lon});
+ way["aeroway"="aerodrome"](around:30000,${lat},${lon}););
+out center 5;`;
+  fetch('https://overpass-api.de/api/interpreter',{method:'POST',body:q})
+    .then(r=>r.json())
+    .then(data=>{
+      if(!data.elements||!data.elements.length)return;
+      const el=data.elements[0];
+      const elat=el.lat||el.center?.lat;
+      const elon=el.lon||el.center?.lon;
+      if(!elat)return;
+      const dist=Math.round(haversine(lat,lon,elat,elon)/100)/10;
+      const name=el.tags?.name||'Aérodrome inconnu';
+      const blk=document.getElementById('airportBlock');
+      if(blk.classList.contains('open')){
+        blk.innerHTML+=`<br><small>🛬 Aérodrome le plus proche : <strong>${name}</strong> — ${dist} km</small>`;
+      }
+    }).catch(()=>{});
+}
+
+function haversine(lat1,lon1,lat2,lon2){
+  const R=6371000,r=Math.PI/180;
+  const dLat=(lat2-lat1)*r,dLon=(lon2-lon1)*r;
+  const a=Math.sin(dLat/2)**2+Math.cos(lat1*r)*Math.cos(lat2*r)*Math.sin(dLon/2)**2;
+  return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
+}
+
+// ─── ZONE RESULT BUTTONS ───
+let zoneResultVal = '';
+function setZoneResult(val) {
+  zoneResultVal = val;
+  const styles = {
+    ok:   {bg:'#d1fae5',border:'#6ee7b7',color:'#065f46'},
+    warn: {bg:'#fef3c7',border:'#fcd34d',color:'#92400e'},
+    nok:  {bg:'#fee2e2',border:'#fca5a5',color:'#991b1b'},
+  };
+  ['ok','warn','nok'].forEach(v => {
+    const btn = document.getElementById(`zr-${v}`);
+    const s = styles[v];
+    if (v === val) {
+      btn.style.background = s.bg;
+      btn.style.borderColor = s.border;
+      btn.style.color = s.color;
+      btn.style.fontWeight = '700';
+    } else {
+      btn.style.background = 'white';
+      btn.style.borderColor = 'var(--border)';
+      btn.style.color = 'var(--text)';
+      btn.style.fontWeight = '600';
+    }
+  });
+  // update zone status block
+  const zs = document.getElementById('zoneStatus');
+  const labels = {ok:'✅ Zone libre', warn:'⚠️ Zone sensible', nok:'🚫 Zone interdite'};
+  const cls    = {ok:'safe', warn:'warn', nok:'danger'};
+  document.getElementById('zsIcon').textContent = labels[val].split(' ')[0];
+  document.getElementById('zsText').textContent = labels[val].split(' ').slice(1).join(' ');
+  const src = document.getElementById('zoneSource').value || '';
+  const dt  = document.getElementById('zoneDate').value || '';
+  document.getElementById('zsSrc').textContent = [src, dt ? 'le '+dt.replace('T',' ') : ''].filter(Boolean).join(' — ');
+  zs.className = 'zone-status open ' + cls[val];
+  sync();
+}
+
+// ─── CAPTURE ───
+let captureDataUrl = '';
+function loadCapture(e) {
+  const file = e.target.files[0]; if(!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    captureDataUrl = ev.target.result;
+    // Preview in section 2
+    document.getElementById('captureImg').src = captureDataUrl;
+    document.getElementById('captureImg').style.display = 'block';
+    document.getElementById('captureEmpty').style.display = 'none';
+    document.getElementById('captureDelBtn').style.display = 'flex';
+    // Also show in signature block
+    document.getElementById('synthCaptureImg').src = captureDataUrl;
+    document.getElementById('synthCapture').style.display = 'block';
+    sync();
+  };
+  reader.readAsDataURL(file);
+}
+function delCapture() {
+  captureDataUrl = '';
+  document.getElementById('captureImg').src = '';
+  document.getElementById('captureImg').style.display = 'none';
+  document.getElementById('captureEmpty').style.display = 'block';
+  document.getElementById('captureDelBtn').style.display = 'none';
+  document.getElementById('captureInput').value = '';
+  document.getElementById('synthCapture').style.display = 'none';
+  document.getElementById('synthCaptureImg').src = '';
+}
+
+// ─── MAPS ───
+function showOsmMap(addr, lat, lon) {
+  const url = `https://www.openstreetmap.org/export/embed.html?bbox=${lon-.02},${lat-.015},${lon+.02},${lat+.015}&layer=mapnik&marker=${lat},${lon}`;
+  document.getElementById('mapFrame').src = url;
+  document.getElementById('mapCap').textContent = '📍 ' + addr + ' — OSM aperçu de localisation';
+  const geoUrl = `https://cartes.gouv.fr/?center=${lon},${lat}&zoom=14&layers=RESTRICTIONS_UAS_CATEGORIE_OUVERTE`;
+  document.getElementById('linkGeo').href = geoUrl;
+  const flybyUrl = `https://app.flyby.aero`;
+  document.getElementById('linkFlyby').href = flybyUrl;
+  const w = document.getElementById('mapWrap');
+  w.classList.add('open');
+  w.scrollIntoView({ behavior: 'smooth' });
+}
+
+function openGeo() {
+  getCoords((addr, lat, lon) => {
+    if (!lat) { alert('Saisissez une adresse d\'abord.'); return; }
+    const url = `https://cartes.gouv.fr/?center=${lon},${lat}&zoom=14`;
+    window.open(url, '_blank', 'noopener');
+  });
+}
+
+function openFlyby() {
+  getCoords((addr, lat, lon) => {
+    showOsmMap(addr || 'Site', lat || 46.6, lon || 2.3);
+    window.open('https://app.flyby.aero', '_blank', 'noopener');
+  });
+}
+
+function openCartesGouv() {
+  getCoords((addr, lat, lon) => {
+    if (lat) showOsmMap(addr, lat, lon);
+    const url = lat
+      ? `https://cartes.gouv.fr/?center=${lon},${lat}&zoom=14`
+      : 'https://cartes.gouv.fr/';
+    window.open(url, '_blank', 'noopener');
+  });
+}
+
+function openNotam() {
+  window.open('https://notaminfo.fr', '_blank', 'noopener');
+}
+
+// ─── PDF (impression iOS/iPadOS) ───
+function makePdf(){
+  // Sur iOS, window.print() génère un PDF partageable via le menu natif
+  // On ouvre d'abord toutes les sections pour l'impression
+  document.querySelectorAll('.card').forEach(c=>c.classList.add('open'));
+  setTimeout(()=>{
+    window.print();
+    // Referme les sections après impression
+    setTimeout(()=>{
+      document.querySelectorAll('.card:not(#s1):not(#s9)').forEach(c=>c.classList.remove('open'));
+    },1000);
+  },200);
+}
+
+// ─── INIT ───
+buildVerify();
+buildChecklist('periChecklist',periItems);
+buildChecklist('rgpdChecklist',rgpdItems);
+buildChecklist('materielChecklist',materielItems);
+buildChecklist('djiflyChecklist',djiflyItems);
+addBat();
+document.getElementById('f-date').valueAsDate=new Date();
+sync();
 </script>
 </body>
 </html>
